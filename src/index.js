@@ -1,4 +1,4 @@
-import { Core, Render, Entity, Timer } from 'level1-lite';
+import { Core, Render, Entity, Timer } from 'l1-lite';
 import sprites from './sprites.json';
 
 Render.createRenderer(600, 400, sprites).then(() => {

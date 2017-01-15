@@ -4,13 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "i": "rm -rf node_modules/level1-lite && npm install",
+    "i": "rm -rf node_modules/l1-lite && npm install",
     "build": "browserify src/index.js -o public/bundle.js -t [ babelify brfs ]",
     "watch": "watchify src/index.js -o public/bundle.js -t [ babelify brfs ] --debug",
     "start": "cd public && python -m SimpleHTTPServer"
   },
   "dependencies": {
-    "level1-lite": "../l2"
+    "l1-lite": "0.0.1"
   },
   "author": "",
   "license": "ISC",

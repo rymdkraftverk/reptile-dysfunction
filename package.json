@@ -10,7 +10,7 @@
     "start": "cd public && python -m SimpleHTTPServer"
   },
   "dependencies": {
-    "l1-lite": "../l2"
+    "l1-lite": "0.0.2"
   },
   "author": "",
   "license": "ISC",

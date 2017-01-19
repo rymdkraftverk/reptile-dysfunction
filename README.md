@@ -3,3 +3,15 @@
 `npm run build || npm run watch`
 
 `npm start`
+
+## Develop l1-lite simultaniously
+
+Change package.json to:
+
+```json
+"dependencies": {
+  "l1-lite": "../l1-lite"
+}
+```
+
+Run `npm run i` to reinstall only l1-lite

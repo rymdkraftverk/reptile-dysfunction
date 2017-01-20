@@ -45,6 +45,10 @@ Render.createRenderer(600, 400, sprites).then(() => {
   entity.behaviours['move-x'] = {
     run: (b, e) => {
       e.sprite.position.x += 0.5;
+      e.sprite.position.x += Gamepad.axisDir(0, 0);
+      if (Gamepad.isPressed(0, 12)){
+        e.sprite.position.x -= 1;
+      }
     }
   }
 

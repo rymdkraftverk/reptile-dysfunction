@@ -1,5 +1,5 @@
   // Animation Example
-  const lizard = Entity.create();
+  const lizard = Entity.create('lizard');
   const animationSpeed = 0.05;
   lizard.animation = Render.getAnimation(['lizard1', 'lizard2'], animationSpeed);
   const { animation } = lizard;

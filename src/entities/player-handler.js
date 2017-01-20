@@ -12,7 +12,7 @@ const PLAYER2_START_POS = {
 
 const PLAYER_SCALE = 2;
 
-const playerHandler = Entity.create();
+const playerHandler = Entity.create('playerHandler');
 playerHandler.behaviours['track-players'] = {
   players: {},
   run: (b, e) => {
@@ -35,7 +35,7 @@ Core.add(playerHandler);
 export default playerHandler;
 
 function addPlayer(id){
-  const player = Entity.create();
+  const player = Entity.create('player' + parseInt(id)+1);
   if (id==0){
     player.sprite = Render.getSprite('player1');
     const { sprite } = player;

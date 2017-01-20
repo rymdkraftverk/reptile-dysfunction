@@ -6,9 +6,12 @@ Render.createRenderer(600, 400, sprites).then(() => {
   Core.start();
   Debug.initDebugTools();
   Key.add('up');
+  Key.add('right');
+  Key.add('down');
+  Key.add('left');
 
   const entity = Entity.create();
-  entity.sprite = Render.getSprite('anpanman');
+  entity.sprite = Render.getSprite('lizard1');
   const { sprite } = entity;
 
   // Set position (Pixi)
@@ -33,18 +36,35 @@ Render.createRenderer(600, 400, sprites).then(() => {
   Render.add(sprite);
   Core.add(entity);
 
-  entity.behaviours['move-y'] = {
+  entity.behaviours['move-up'] = {
     run: (b, e) => {
-      e.sprite.position.y += 0.5;
       if (Key.isDown('up')){
         e.sprite.position.y -= 1;
       }
     }
   }
 
-  entity.behaviours['move-x'] = {
+  entity.behaviours['move-left'] = {
     run: (b, e) => {
-      e.sprite.position.x += 0.5;
+      if (Key.isDown('left')){
+        e.sprite.position.x -= 1;
+      }
+    }
+  }
+
+  entity.behaviours['move-down'] = {
+    run: (b, e) => {
+      if (Key.isDown('down')){
+        e.sprite.position.y += 1;
+      }
+    }
+  }
+
+  entity.behaviours['move-right'] = {
+    run: (b, e) => {
+      if (Key.isDown('right')){
+        e.sprite.position.x += 1;
+      }
     }
   }
 

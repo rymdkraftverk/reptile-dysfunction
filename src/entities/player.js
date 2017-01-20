@@ -2,7 +2,7 @@ import { Render, Entity, Key, Gamepad} from 'l1-lite';
 import Matter from 'matter-js'
 
 module.exports = core => {
-  const entity = Entity.create();
+  const entity = Entity.create('lizard');
   entity.sprite = Render.getSprite('lizard1');
   const { sprite } = entity;
 

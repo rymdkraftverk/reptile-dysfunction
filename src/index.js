@@ -1,5 +1,6 @@
 import { Core, Render, Entity, Timer, Key, Debug, Gamepad} from 'l1-lite';
 import sprites from './sprites.json';
+
 import Matter from 'matter-js'
 
 var Engine = Matter.Engine;
@@ -8,6 +9,9 @@ var World = Matter.World;
 var Bodies = Matter.Bodies;
 engine.world.gravity.y = 0;
 Engine.run(engine);
+
+import playerHandler from './entities/player-handler';
+import controller from './entities/controller';
 
 Render.createRenderer(600, 400, sprites).then(() => {
   Core.createCore();
@@ -72,32 +76,6 @@ Render.createRenderer(600, 400, sprites).then(() => {
       Matter.Body.setVelocity(e.body, direction)
     }
   }
-
-  // Animation Example
-  const lizard = Entity.create();
-  const animationSpeed = 0.05;
-  lizard.animation = Render.getAnimation(['lizard1', 'lizard2'], animationSpeed);
-  const { animation } = lizard;
-  animation.position.y = 100;
-  animation.position.x = 100;
-  animation.scale.x = 8;
-  animation.scale.y = 8;
-  animation.play();
-
-  Render.add(animation);
-  Core.add(lizard);
-
-  // Controller test
-  const controller = Entity.create();
-  controller.behaviours['scan-for-gamepads'] = {
-    run: (b, e) => {
-      Gamepad.run();
-      if (Key.isDown('up')){
-        console.log('gamepads', Gamepad.getGamepads());
-      }
-    }
-  }
-  Core.add(controller);
 });
 
 

@@ -20,15 +20,6 @@ module.exports = core => {
   sprite.scale.x = 4;
   sprite.scale.y = 4;
 
-  // Make clickable (Pixi)
-  sprite.interactive = true;
-  sprite.on('mousedown', () => console.log('mousedown'))
-    .on('mouseup', () => console.log('mouseup'))
-    .on('mouseupoutside', () => console.log('mouseupoutside'))
-    .on('touchstart', () => console.log('touchstart'))
-    .on('touchend', () => console.log('touchend'))
-    .on('touchendoutside', () => console.log('touchendoutside'));
-
   core.Render.add(sprite);
   core.add(entity);
 

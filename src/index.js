@@ -1,4 +1,4 @@
-import { Core, Render, Entity, Timer, Key, Debug } from 'l1-lite';
+import { Core, Render, Entity, Timer, Key, Debug, Gamepad} from 'l1-lite';
 import sprites from './sprites.json';
 
 Render.createRenderer(600, 400, sprites).then(() => {
@@ -61,4 +61,30 @@ Render.createRenderer(600, 400, sprites).then(() => {
       }
     }
   }
+
+  // Animation Example
+  const lizard = Entity.create();
+  const animationSpeed = 0.05;
+  lizard.animation = Render.getAnimation(['lizard1', 'lizard2'], animationSpeed);
+  const { animation } = lizard;
+  animation.position.y = 100;
+  animation.position.x = 100;
+  animation.scale.x = 8;
+  animation.scale.y = 8;
+  animation.play();
+
+  Render.add(animation);
+  Core.add(lizard);
+
+  // Controller test
+  const controller = Entity.create();
+  controller.behaviours['scan-for-gamepads'] = {
+    run: (b, e) => {
+      Gamepad.run();
+      if (Key.isDown('up')){
+        console.log('gamepads', Gamepad.getGamepads());
+      }
+    }
+  }
+  Core.add(controller);
 });

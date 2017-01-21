@@ -6,7 +6,7 @@ import movementNormal from '../behaviours/movement-normal.js';
 module.exports = core => {
   const entity = Entity.create('lizard');
   entity.type = 'player';
-  entity.sprite = Render.getSprite('lizard1');
+  entity.sprite = Render.getAnimation(['lizard1', 'lizard2'], 0.05);
   const { sprite } = entity;
 
   // Set position (Pixi)
@@ -22,6 +22,7 @@ module.exports = core => {
   sprite.anchor.y = 0.5;
   sprite.scale.x = 4;
   sprite.scale.y = 4;
+  sprite.play();
 
   const { body } = entity;
 

@@ -1,6 +1,7 @@
 import { Core, Render, Entity, Timer, Key, Debug, Gamepad} from 'l1-lite';
 import sprites from './sprites.json';
 import map from './entities/map'
+import treasure from './entities/treasure'
 
 import Matter from 'matter-js'
 
@@ -38,6 +39,7 @@ Render.createRenderer(1660, 930, sprites).then(() => {
   Core.add(initPhase)
   map(Core);
   addWave(Core);
+  treasure();
 
   addPlayer('1');
 

@@ -8,8 +8,6 @@ const movementNormal = require('./movement-normal.js');
 module.exports = {
   duration: MAX_SLIPPERY_DURATION,
   run: (b, e) => {
-    e.sprite.position.x = e.body.position.x;
-    e.sprite.position.y = e.body.position.y;
     var x = 0;
     var y = 0;
     if (Key.isDown('right')) {

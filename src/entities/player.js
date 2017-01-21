@@ -2,6 +2,7 @@ import { Core, Render, Entity, Key, Gamepad} from 'l1-lite';
 import { Bodies, World } from 'matter-js'
 
 import movementNormal from '../behaviours/movement-normal.js';
+import syncSpriteBody from '../behaviours/sync-sprite-body.js';
 
 const DEATH_TICKS = 100
 
@@ -48,6 +49,7 @@ export function addPlayer(id){
   body.sprite = sprite;
 
   player.behaviours['movement'] = movementNormal(id);
+  player.behaviours['sync-sprite-body'] = syncSpriteBody;
 
   player.behaviours['killed'] = {
     deathTicks: DEATH_TICKS,
@@ -61,7 +63,8 @@ export function addPlayer(id){
       if (b.deathTicks == DEATH_TICKS && b.killed) {
         player.behaviours['movement'].run = (b, e) => {}
         const fire = Entity.create('fire')
-        fire.animation = Render.getAnimation(['fire1', 'fire2', 'fire3'], 0.3)
+        fire.animation = Render.getAnimation(['fire1', 'fire2', 'fire3'], 0.3);
+        World.remove(Core.engine.world, [e.body]);
         const { animation } = fire
         animation.position.x = e.sprite.position.x - 25
         animation.position.y = e.sprite.position.y - 18
@@ -80,7 +83,6 @@ export function addPlayer(id){
         Core.remove(b.fireEntity)
 
         Render.remove(e.sprite)
-        World.remove(Core.engine.world, [e.body])
         Core.remove(e)
         return
       }

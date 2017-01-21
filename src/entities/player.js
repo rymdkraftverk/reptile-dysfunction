@@ -1,8 +1,9 @@
 import { Core, Render, Entity, Key, Gamepad} from 'l1-lite';
-import { Bodies, World } from 'matter-js'
+import { Bodies, World, Events } from 'matter-js'
 
 import movementNormal from '../behaviours/movement-normal.js';
 import syncSpriteBody from '../behaviours/sync-sprite-body.js';
+import movementPushed from '../behaviours/movement-pushed.js';
 
 const DEATH_TICKS = 100
 
@@ -40,6 +41,26 @@ export function addPlayer(id){
   sprite.scale.y = PLAYER_SCALE;
 
   World.add(Core.engine.world, [player.body]);
+
+  Events.on(Core.engine, 'collisionActive', (event) => {
+    const { pairs } = event;
+
+    for (let i = 0; i != pairs.length; ++i) {
+      const pair = pairs[i];
+      const { bodyA, bodyB } = pair;
+	  if (bodyA.entity && bodyB.entity) {
+        if (bodyA.entity.type === 'player' && (bodyB.entity.type === 'player' || bodyB.entity.type === 'wave')) {
+          const idA = bodyA.entity.id[bodyA.entity.id.length - 2];
+          bodyA.entity.behaviours.movement = movementPushed(idA);//Ful-hack
+        }
+        if (bodyB.entity.type === 'player' && (bodyA.entity.type === 'player' || bodyA.entity.type === 'wave')) {
+          const idB = bodyB.entity.id[bodyB.entity.id.length - 2];
+          bodyB.entity.behaviours.movement = movementPushed(idB);//Ful-hack
+        }
+	  }
+    }
+  });
+
   /*
   sprite.position.y = 0;
   sprite.position.x = 0;

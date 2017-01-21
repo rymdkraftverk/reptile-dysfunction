@@ -26,6 +26,7 @@ module.exports = () => {
   Render.add(sprite);
   Core.add(entity);
 
+  //None of these three lines seem to do anything
   entity.body.friction = 0;
   entity.behaviours['sync-sprite-body'] = syncSpriteBody;
   entity.behaviours['movement'] = waveMovement;

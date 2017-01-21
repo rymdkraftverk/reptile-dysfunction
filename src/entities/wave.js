@@ -14,10 +14,12 @@ module.exports = (initPos, direction) => {
     'wave-3-flip',
     'wave-3-flip'
     ], 0.3);
+  entity.type = 'wave';
   const { sprite } = entity;
 
   // Set position (Pixi)
-  entity.body = Bodies.circle(initPos.x, initPos.y, 30);
+  entity.body = Bodies.circle(initPos.x, initPos.y, 80);
+  entity.body.entity = entity; //Whyyy?!
   World.add(Core.engine.world, [entity.body]);
 
   sprite.width = 16;

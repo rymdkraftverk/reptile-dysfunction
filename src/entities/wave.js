@@ -23,7 +23,7 @@ module.exports = (initPos, direction) => {
 
   // Set position (Pixi)
   //entity.body = Bodies.circle(initPos.x, initPos.y, 80);
-  entity.body = Bodies.rectangle(700, 450, 200, 200, { 
+  entity.body = Bodies.rectangle(initPos.x, initPos.y, 200, 200, { 
     chamfer: { radius: [200, 10, 350, 10] }
   });
   Body.rotate(entity.body, Math.PI/4+Math.PI/2);

@@ -30,6 +30,11 @@ const PLAYER4_START_POS = {
   y: 600
 };
 
+const PLAYER5_START_POS = {
+  x: 1000,
+  y: 600
+};
+
 const PLAYER_SCALE = 4;
 
 export function addPlayer(id){
@@ -54,6 +59,11 @@ export function addPlayer(id){
   else if (id==3){
     player.sprite = Render.getAnimation(['lizard1-p4', 'lizard2-p4'], 0.05);
     body = Bodies.circle(PLAYER4_START_POS.x, PLAYER4_START_POS.y, 8*PLAYER_SCALE);
+  }
+
+  else if (id==4){
+    player.sprite = Render.getAnimation('pikachu');
+    body = Bodies.circle(PLAYER5_START_POS.x, PLAYER5_START_POS.y, 8*PLAYER_SCALE);
   }
 
   player.body = body;

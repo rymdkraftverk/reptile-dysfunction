@@ -6,8 +6,9 @@ export function create(creator){
   push.creatorId = creator.id;
   const {x, y} = creator.body.position;
 
-  push.body = Bodies.rectangle(x, y, 50, 50);
+  push.body = Bodies.circle(x, y, 100);
   push.body.entity = push;
+  push.body.collisionFilter.group = -1 * (creator.id + 1);
 
   World.add(Core.engine.world, [push.body]);
   Core.add(push);

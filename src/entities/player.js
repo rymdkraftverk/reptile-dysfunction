@@ -75,6 +75,8 @@ export function addPlayer(id){
   sprite.scale.x = PLAYER_SCALE;
   sprite.scale.y = PLAYER_SCALE;
 
+  player.body.collisionFilter.group = -1 * (id + 1);
+
   World.add(Core.engine.world, [player.body]);
 
   Events.on(Core.engine, 'collisionActive', (event) => {

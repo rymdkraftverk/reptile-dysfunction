@@ -7,6 +7,8 @@ import Matter from 'matter-js'
 import addWave from './entities/wave.js'
 import initPhase from './entities/init-phase.js'
 
+import { addPlayer } from './entities/player'
+
 var Engine = Matter.Engine;
 var engine = Engine.create();
 var World = Matter.World;
@@ -36,5 +38,7 @@ Render.createRenderer(1660, 930, sprites).then(() => {
   Core.add(initPhase)
   map(Core);
   addWave(Core);
+
+  addPlayer('1');
 
 });

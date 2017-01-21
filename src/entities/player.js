@@ -38,7 +38,7 @@ const PLAYER5_START_POS = {
 const PLAYER_SCALE = 4;
 
 export function addPlayer(id){
-  const player = Entity.create('player' + parseInt(id)+1);
+  const player = Entity.create(id);
   player.type = 'player';
   player.controllerId = id;
   let body;
@@ -85,12 +85,12 @@ export function addPlayer(id){
       const { bodyA, bodyB } = pair;
 	  if (bodyA.entity && bodyB.entity) {
         if (bodyA.entity.type === 'player' && (bodyB.entity.type === 'player' || bodyB.entity.type === 'wave')) {
-          const idA = bodyA.entity.id[bodyA.entity.id.length - 2];
-          bodyA.entity.behaviours.movement = movementPushed(idA);//Ful-hack
+          const idA = bodyA.entity.id;
+          bodyA.entity.behaviours.movement = movementPushed(idA);
         }
         if (bodyB.entity.type === 'player' && (bodyA.entity.type === 'player' || bodyA.entity.type === 'wave')) {
-          const idB = bodyB.entity.id[bodyB.entity.id.length - 2];
-          bodyB.entity.behaviours.movement = movementPushed(idB);//Ful-hack
+          const idB = bodyB.entity.id;
+          bodyB.entity.behaviours.movement = movementPushed(idB);
         }
 	  }
     }

@@ -1,5 +1,6 @@
 import { Core, Render, Entity, Timer, Key, Debug, Gamepad} from 'l1-lite';
 import sprites from './sprites.json';
+import map from './entities/map'
 
 import Matter from 'matter-js'
 
@@ -21,7 +22,8 @@ Core.Render = Render;
 import playerHandler from './entities/player-handler';
 import controller from './entities/controller';
 
-Render.createRenderer(600, 400, sprites).then(() => {
+Render.createRenderer(1660, 930, sprites).then(() => {
+  map();
   Core.createCore();
   Core.start();
   Debug.initDebugTools();
@@ -30,6 +32,7 @@ Render.createRenderer(600, 400, sprites).then(() => {
   Key.add('down');
   Key.add('left');
 
+
   addPlayer(Core);
 
   // Set position (Pixi)
@@ -37,4 +40,3 @@ Render.createRenderer(600, 400, sprites).then(() => {
   World.add(engine.world, [entity.body]);
 
 });
-

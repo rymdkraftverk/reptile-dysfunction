@@ -23,6 +23,16 @@ const initState = () => {
   return q.state || 'waiting'
 }
 
+const spawnEvil = cid => {
+  const kid = getArbitraryNumberInsteadOfSensibleControllerIdForKeyboard(cid)
+  const e = Core.getEntities()
+  const players = disabled.filter(e => e.type == 'player')
+  const evil = players.filter(e => e.controllerId == kid)
+  if(!evil) throw new Error('No evil found')
+  if(evil.length != 1) throw new Error('Too much evil found')
+  evil[0].alignment = 'evil'
+}
+
 const disable = () => {
   const entities = Core.getEntities()
   entities.forEach(e => {
@@ -39,6 +49,10 @@ const enable = () => {
     Core.add(e)
   })
   disabled.length = 0
+}
+
+const getArbitraryNumberInsteadOfSensibleControllerIdForKeyboard = id => {
+  return id == 'keyboard' ? '4': id
 }
 
 // states
@@ -66,7 +80,7 @@ const registration = {
     e.codes = {}
     Core.get('input')
     .controllerIds()
-    .concat(['keys']) // remove to disable keyboard
+    .concat(['keyboard']) // remove to disable keyboard
     .forEach(id => {
       e.codes[id] = []
     })
@@ -99,7 +113,7 @@ const reveal = {
     const k = controllers[i]
     const c = codes[k]
     return {
-      controller: k,
+      cid: k,
       code: c
     }
   },
@@ -108,6 +122,7 @@ const reveal = {
     const p = b.pick(e.codes)
     const code = p.code.map(btn => btn.toUpperCase())
     console.log(`[REVEAL] Player with code [${code}] is EVIL`)
+    spawnEvil(p.cid)
   },
   run: (b, e) => {
     if(ready()) transition(e, 'reveal', 'finished')

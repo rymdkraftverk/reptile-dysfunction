@@ -24,7 +24,7 @@ import playerHandler from './entities/player-handler';
 import controller from './entities/controller';
 
 Render.createRenderer(1660, 930, sprites).then(() => {
-  map();
+  map(Core);
   Core.createCore();
   Core.start();
   Debug.initDebugTools();

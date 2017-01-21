@@ -22,6 +22,11 @@ module.exports = core => {
   sprite.scale.x = 4;
   sprite.scale.y = 4;
 
+  const { body } = entity;
+
+  body.entity = entity;
+  body.sprite = sprite;
+
   core.Render.add(sprite);
   core.add(entity);
 

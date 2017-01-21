@@ -17,6 +17,7 @@ export default () => {
 
   let newPlayers = 0
   let currentPlayers = 0
+  let playerSprites = []
 
   waitingForPlayersEntity.behaviours['add-player'] = {
     add: (newPlayer) => {
@@ -39,8 +40,18 @@ export default () => {
         Render.add(newPlayerEntity.sprite)
         newPlayers--
         currentPlayers++
+        playerSprites = playerSprites.concat(newPlayerEntity.sprite)
       }
     }
+  }
+
+  waitingForPlayersEntity.destroy = () => {
+    playerSprites.forEach(ps => {
+      Render.remove(ps)
+    })
+
+    Render.remove(waitingForPlayersEntity.sprite)
+    Core.remove(waitingForPlayersEntity)
   }
 
   Render.add(sprite)

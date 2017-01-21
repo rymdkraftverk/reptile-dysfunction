@@ -24,20 +24,19 @@ Core.Bodies = Bodies;
 Core.Render = Render;
 
 import playerHandler from './entities/player-handler';
-import controller from './entities/controller';
+import input from './entities/input';
 
 Render.createRenderer(1660, 930, sprites).then(() => {
 
   Core.createCore();
   Core.start();
   Debug.initDebugTools();
-  Key.add('up');
-  Key.add('right');
-  Key.add('down');
-  Key.add('left');
-  Key.add('space');
+
+  Core.add(input)
+  input.registerKeys()
 
   Core.add(initPhase)
+
   map(Core);
   treasure();
   collisions();

@@ -1,11 +1,15 @@
 import { Gamepad, Render, Key, Entity, Timer, Core } from 'l1-lite';
 import waitingForPlayers from './waiting-for-players'
 import enterCode from './enter-code'
+import evilCode from './evil-code'
 import qs from 'query-string';
 
 // consts
 const allowed = ['initPhase', 'input', 'waiting-for-players']
 const codeKeys = ['h', 'j', 'k', 'l', '0', '1', '2', '3']
+const kbcode = {
+  h: 'r', j: 'g', k: 'b', l: 'y'
+}
 
 // pure
 const behaviorize = run => ({ run })
@@ -25,6 +29,9 @@ const controllerIds = () => {
   return Core.get('input')
   .controllerIds()
   .concat(['keyboard']) // remove to disable keyboard
+}
+
+const anounceEvil = code => {
 }
 
 const spawnEvil = cid => {
@@ -134,6 +141,7 @@ const registration = {
 }
 
 const reveal = {
+  delay: 120,
   pick: (codes) => {
     const controllers = Object.keys(codes)
     const i = Math.floor(Math.random() * controllers.length)
@@ -147,12 +155,19 @@ const reveal = {
   init: (b, e) => {
     console.log('revealing')
     const p = b.pick(e.codes)
-    const code = p.code.map(btn => btn.toUpperCase())
-    console.log(`[REVEAL] Player with code [${code}] is EVIL`)
+
+    console.log(`[REVEAL] Player with code [${p.code}] is EVIL`)
+    if(p.cid == 'keyboard') p.code = p.code.map(k => kbcode[k])
+    b.evilSign = evilCode(grbyCode)
+
     spawnEvil(p.cid)
   },
   run: (b, e) => {
-    transition(e, 'reveal', 'finished')
+    b.delay--
+    if(b.delay <= 0) {
+      b.evilSign.destroy()
+      transition(e, 'reveal', 'finished')
+    }
   }
 }
 

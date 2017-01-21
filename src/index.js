@@ -4,7 +4,6 @@ import map from './entities/map'
 import treasure from './entities/treasure'
 
 import Matter from 'matter-js'
-
 import addWave from './entities/wave.js'
 import initPhase from './entities/init-phase.js'
 
@@ -27,7 +26,7 @@ import playerHandler from './entities/player-handler';
 import controller from './entities/controller';
 
 Render.createRenderer(1660, 930, sprites).then(() => {
-  
+
   Core.createCore();
   Core.start();
   Debug.initDebugTools();
@@ -40,7 +39,5 @@ Render.createRenderer(1660, 930, sprites).then(() => {
   Core.add(initPhase)
   map(Core);
   treasure();
-
   addPlayer('1');
-
 });

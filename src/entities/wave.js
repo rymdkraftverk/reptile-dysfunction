@@ -4,6 +4,8 @@ import { World, Bodies } from 'matter-js'
 import waveMovement from '../behaviours/wave-movement.js';
 import syncSpriteBody from '../behaviours/sync-sprite-body.js';
 
+const WAVE_LIFESPAN = 10 * 60;
+
 module.exports = (initPos, direction) => {
   const entity = Entity.create('wave');
   entity.sprite = Render.getAnimation([
@@ -37,4 +39,14 @@ module.exports = (initPos, direction) => {
   entity.body.friction = 0;
   entity.behaviours['sync-sprite-body'] = syncSpriteBody;
   entity.behaviours['movement'] = waveMovement(direction);
+  entity.behaviours['suicide-switch'] = {
+    timer: 0,
+    run: (b, e) => {
+      b.timer++;
+      if(b.timer > WAVE_LIFESPAN) {
+        Render.remove(e.sprite)
+        Core.remove(e)
+      }
+    }
+  }
 }

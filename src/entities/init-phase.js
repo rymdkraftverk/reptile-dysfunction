@@ -76,7 +76,7 @@ const registration = {
       if(codeKeys.includes(btn)) {
         // console.log(`[CODE KEY]: cid: ${cid}, btn: ${btn}`)
         const code = b.codes[cid]
-        if(code.length < 4) {
+        if(code.length < b.codeLength) {
           code.push(btn)
         }
         // console.log(`[CODE]: ${code} (cid: ${cid})`)

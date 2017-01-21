@@ -58,7 +58,7 @@ const appearRandomly = {
       "gem3",
       "gem2",
       "gem1"
-    ], 0.6);
+    ], 0.5);
 
     const { sprite } = entity;
     const { x, y } = getRandomPosition();

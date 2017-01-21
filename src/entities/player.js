@@ -9,7 +9,7 @@ module.exports = core => {
   const { sprite } = entity;
 
   // Set position (Pixi)
-  entity.body = core.Bodies.circle(0, 0, 10);
+  entity.body = core.Bodies.circle(800, 450, 10);
   core.World.add(core.engine.world, [entity.body]);
   /*
   sprite.position.y = 0;

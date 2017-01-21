@@ -35,8 +35,4 @@ Render.createRenderer(1660, 930, sprites).then(() => {
 
   addPlayer(Core);
 
-  // Set position (Pixi)
-  entity.body = Bodies.circle(0, 0, 10);
-  World.add(engine.world, [entity.body]);
-
 });

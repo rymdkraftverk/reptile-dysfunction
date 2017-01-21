@@ -1,5 +1,6 @@
 import { Core, Render, Entity, Key, Gamepad} from 'l1-lite';
-import { Bodies, World, Events } from 'matter-js'
+import { Bodies, World, Events } from 'matter-js';
+import { Howl } from 'howler';
 
 import movementNormal from '../behaviours/movement-normal.js';
 import syncSpriteBody from '../behaviours/sync-sprite-body.js';
@@ -111,6 +112,10 @@ export function addPlayer(id){
         player.behaviours['movement'].run = (b, e) => {}
         const fire = Entity.create('fire')
         fire.animation = Render.getAnimation(['fire1', 'fire2', 'fire3'], 0.3);
+        const sound = new Howl({
+          src: ['sounds/death.wav']
+        });
+        sound.play();
         World.remove(Core.engine.world, [e.body]);
         const { animation } = fire
         animation.position.x = e.sprite.position.x - 25

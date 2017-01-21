@@ -1,6 +1,7 @@
 import { Key } from 'l1-lite';
 import Matter from 'matter-js';
 
+const SPEED = 3;
 module.exports = {
   run: (b, e) => {
     Matter.Body.setVelocity(e.body, Matter.Vector.create(0, 0))
@@ -9,16 +10,16 @@ module.exports = {
     var x = 0;
     var y = 0;
     if (Key.isDown('right')) {
-      x += 1;
+      x += SPEED;
     }
     if (Key.isDown('down')) {
-      y += 1;
+      y += SPEED;
     }
     if (Key.isDown('left')) {
-      x -= 1;
+      x -= SPEED;
     }
     if (Key.isDown('up')) {
-      y -= 1;
+      y -= SPEED;
     }
     const direction = Matter.Vector.create(x, y)
     //Matter.Body.applyForce(e.body, e.body, direction);

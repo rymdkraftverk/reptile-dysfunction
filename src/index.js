@@ -24,7 +24,7 @@ import playerHandler from './entities/player-handler';
 import controller from './entities/controller';
 
 Render.createRenderer(1660, 930, sprites).then(() => {
-  map(Core);
+  
   Core.createCore();
   Core.start();
   Debug.initDebugTools();
@@ -33,7 +33,7 @@ Render.createRenderer(1660, 930, sprites).then(() => {
   Key.add('down');
   Key.add('left');
 
-
+  map(Core);
   addPlayer(Core);
   addWave(Core);
 

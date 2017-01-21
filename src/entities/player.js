@@ -5,6 +5,7 @@ import movementNormal from '../behaviours/movement-normal.js';
 
 module.exports = core => {
   const entity = Entity.create('lizard');
+  entity.type = 'player';
   entity.sprite = Render.getSprite('lizard1');
   const { sprite } = entity;
 

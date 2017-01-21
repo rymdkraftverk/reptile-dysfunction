@@ -5,27 +5,29 @@ export default (core) => {
   
 const entity = Entity.create('map');
   entity.sprite = Render.getSprite('map');
+  entity.type = 'map';
   entity.body = Bodies.circle(1660/2, (930/2)-15, 430, {
     isSensor: true
   });
   
   Events.on(core.engine, 'collisionEnd', (event) => {
     const { pairs } = event;
-    console.log(event);
+    
     let deleteMes = [];
     for (let i = 0, j = pairs.length; i != j; ++i) {
         const pair = pairs[i];
         const { bodyA, bodyB } = pair;
-        console.log(pair);
-        
-        if (bodyA !== entity.body) {
+        if (!bodyA.entity || !bodyB.entity) continue;
+        if (bodyA !== entity.body && bodyB !== entity.body) continue;
+
+        if (bodyB.entity.type === 'map' && bodyA.entity.type === 'player') {
           var obj = {
             entity: bodyA.entity,
             sprite: bodyA.sprite,
             body: bodyA
           }
           deleteMes = deleteMes.concat(obj);
-        } else if (bodyB !== entity.body) {
+        } else if (bodyA.entity.type === 'map' && bodyB.entity.type === 'player') {
           var obj = {
             entity: bodyB.entity,
             sprite: bodyB.sprite,
@@ -41,10 +43,11 @@ const entity = Entity.create('map');
     })
   });
 
-
-
   const { sprite } = entity;
   const { body } = entity;
+
+  body.entity = entity;
+  body.sprite = sprite;
 
   sprite.position.y = 0;
   sprite.position.x = 0;

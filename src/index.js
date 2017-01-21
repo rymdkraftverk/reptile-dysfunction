@@ -35,10 +35,10 @@ Render.createRenderer(1660, 930, sprites).then(() => {
   Key.add('right');
   Key.add('down');
   Key.add('left');
+  Key.add('space');
 
   Core.add(initPhase)
   map(Core);
-  addWave(Core);
   treasure();
 
   addPlayer('1');

@@ -4,6 +4,7 @@ import { Bodies, World } from 'matter-js'
 import movementNormal from '../behaviours/movement-normal.js';
 import syncSpriteBody from '../behaviours/sync-sprite-body.js';
 import push from '../behaviours/push.js';
+import summonWave from '../behaviours/summon-wave.js'
 
 const DEATH_TICKS = 100
 
@@ -74,6 +75,7 @@ export function addPlayer(id){
   player.behaviours['movement'] = movementNormal(id);
   player.behaviours['sync-sprite-body'] = syncSpriteBody;
   player.behaviours['push'] = push;
+  player.behaviours['summonWave'] = summonWave(id);
 
   player.behaviours['killed'] = {
     deathTicks: DEATH_TICKS,

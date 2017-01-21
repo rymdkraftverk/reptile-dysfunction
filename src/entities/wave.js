@@ -4,18 +4,15 @@ import { World, Bodies } from 'matter-js'
 import waveMovement from '../behaviours/wave-movement.js';
 import syncSpriteBody from '../behaviours/sync-sprite-body.js';
 
-module.exports = () => {
+module.exports = (initPos, direction) => {
   const entity = Entity.create('wave');
   entity.sprite = Render.getSprite('anpanman');
   const { sprite } = entity;
 
   // Set position (Pixi)
-  entity.body = Bodies.circle(0, 450, 80);
+  entity.body = Bodies.circle(initPos.x, initPos.y, 80);
   World.add(Core.engine.world, [entity.body]);
-  /*
-  sprite.position.y = 0;
-  sprite.position.x = 0;
-  */
+
   sprite.width = 16;
   sprite.height = 16;
   sprite.anchor.x = 0.5;
@@ -28,5 +25,5 @@ module.exports = () => {
 
   entity.body.friction = 0;
   entity.behaviours['sync-sprite-body'] = syncSpriteBody;
-  entity.behaviours['movement'] = waveMovement;
+  entity.behaviours['movement'] = waveMovement(direction);
 }

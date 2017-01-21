@@ -34,7 +34,11 @@ module.exports = (controllerId) => ({
  		y += Gamepad.axisDir(controllerId, 5) * SPEED;
  	  }
     const direction = Matter.Vector.create(x, y)
-    //Matter.Body.applyForce(e.body, e.body, direction);
+
+    const east = Matter.Vector.create(1, 0)
+    const angle = Matter.Vector.angle(east, direction);
+    Matter.Body.setAngle(e.body, angle);
+
     Matter.Body.setVelocity(e.body, direction)
   }
 })

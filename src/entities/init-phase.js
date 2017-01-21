@@ -2,8 +2,8 @@ import { Gamepad, Render, Key, Entity, Timer, Core } from 'l1-lite';
 import qs from 'query-string';
 
 // consts
-const allowed = ['initPhase', 'input']
-const codeKeys = ['h', 'j', 'k', 'l']
+const allowed = ['initPhase', 'input', 'waiting-for-players']
+const codeKeys = ['h', 'j', 'k', 'l', '0', '1', '2', '3']
 
 // pure
 const behaviorize = run => ({ run })

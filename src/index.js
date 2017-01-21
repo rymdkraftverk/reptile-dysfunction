@@ -48,6 +48,6 @@ Render.createRenderer(1660, 930, sprites).then(() => {
   winCheck();
   collisions();
   addPlayer('4');
-  Core.add(initPhase)
   waitingForPlayers();
+  Core.add(initPhase)
 });

@@ -4,7 +4,7 @@ import Matter from 'matter-js'
 import waveMovement from '../behaviours/wave-movement.js';
 
 module.exports = core => {
-  const entity = Entity.create('lizard');
+  const entity = Entity.create('wave');
   entity.sprite = Render.getSprite('anpanman');
   const { sprite } = entity;
 

@@ -9,7 +9,7 @@ module.exports = (controllerId) => ({
   cooldown: 0,
   run: (b, e) => {
     b.cooldown--;
-    if (Key.isDown('space')) {
+    if (Key.isDown('space') || Gamepad.isPressed(e.controllerId, 1)) {
       const player = Core.get('player' + parseInt(controllerId) + 1);
       const direction = Vector.rotate(Vector.create(1, 0), player.body.angle);
       const waveStart = Vector.sub(player.body.position, Vector.mult(direction, 1000))

@@ -1,4 +1,4 @@
-import { Gamepad, Key, Entity, Timer, Core } from 'l1-lite';
+import { Gamepad, Render, Key, Entity, Timer, Core } from 'l1-lite';
 import qs from 'query-string';
 
 // consts
@@ -6,10 +6,6 @@ const allowed = ['initPhase', 'input']
 const codeKeys = ['h', 'j', 'k', 'l']
 
 // pure
-const ready = () => ['up', 'down'].every(Key.isDown)
-
-const registered = () => Key.isDown('left')
-
 const behaviorize = run => ({ run })
 
 const transition = (e, from, to) => {
@@ -21,6 +17,12 @@ const transition = (e, from, to) => {
 const initState = () => {
   const q = qs.parse(window.location.search);
   return q.state || 'waiting'
+}
+
+const controllerIds = () => {
+  return Core.get('input')
+  .controllerIds()
+  .concat(['keyboard']) // remove to disable keyboard
 }
 
 const spawnEvil = cid => {
@@ -57,12 +59,26 @@ const getArbitraryNumberInsteadOfSensibleControllerIdForKeyboard = id => {
 
 // states
 const waiting = {
+  complete: () => {
+    const count = controllerIds().length
+    return readyPlayers.length == count
+  },
   init: (b, e) => {
     console.log('waiting...')
+
+    Core.get('input')
+    .addClickListener('ready', (cid, btn) => {
+      if(!readyPlayers.includes(cid)) {
+        readyPlayers.push(cid)
+
+        Core.get('waiting-for-players')
+        .behaviours['add-player'].add()
+      }
+    })
   },
   run: (b, e) => {
-    disable(e)
-    if(ready()) transition(e, 'waiting', 'registration')
+    disable()
+    if(b.complete()) transition(e, 'waiting', 'registration')
   }
 }
 
@@ -78,9 +94,7 @@ const registration = {
 
     // clear codes
     e.codes = {}
-    Core.get('input')
-    .controllerIds()
-    .concat(['keyboard']) // remove to disable keyboard
+    controllerIds()
     .forEach(id => {
       e.codes[id] = []
     })
@@ -125,7 +139,7 @@ const reveal = {
     spawnEvil(p.cid)
   },
   run: (b, e) => {
-    if(ready()) transition(e, 'reveal', 'finished')
+    transition(e, 'reveal', 'finished')
   }
 }
 
@@ -141,6 +155,7 @@ const finished = {
 // shitty state
 const disabled = []
 const codes = []
+const readyPlayers = []
 
 // init
 const phase = Entity.create('initPhase');

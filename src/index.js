@@ -6,6 +6,7 @@ import treasure from './entities/treasure'
 import Matter from 'matter-js'
 import addWave from './entities/wave.js'
 import initPhase from './entities/init-phase.js'
+import winCheck from './entities/win-check.js'
 import collisions from './collisions'
 
 import { addPlayer } from './entities/player'
@@ -35,10 +36,11 @@ Render.createRenderer(1660, 930, sprites).then(() => {
   Core.add(input)
   input.registerKeys()
 
-  Core.add(initPhase)
-
   map(Core);
   treasure();
+  winCheck();
   collisions();
-  addPlayer('1');
+  addPlayer('4');
+
+  Core.add(initPhase)
 });

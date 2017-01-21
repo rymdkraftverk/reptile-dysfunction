@@ -85,7 +85,7 @@ entity.eachBtn = (action) => {
   })
 
   buttons.keys.forEach(btn => {
-    action('keys', btn)
+    action('keyboard', btn)
   })
 }
 

@@ -10,6 +10,7 @@
     "start": "cd public && python -m SimpleHTTPServer"
   },
   "dependencies": {
+    "howler": "^2.0.2",
     "matter-js": "^0.11.1",
     "query-string": "^4.3.1"
   },

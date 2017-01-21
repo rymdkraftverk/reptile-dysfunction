@@ -23,6 +23,16 @@ const initState = () => {
   return q.state || 'waiting'
 }
 
+const spawnEvil = cid => {
+  const kid = getArbitraryNumberInsteadOfSensibleControllerIdForKeyboard(cid)
+  const e = Core.getEntities()
+  const players = disabled.filter(e => e.type == 'player')
+  const evil = players.filter(e => e.controllerId == kid)
+  if(!evil) throw new Error('No evil found')
+  if(evil.length != 1) throw new Error('Too much evil found')
+  evil[0].alignment = 'evil'
+}
+
 const disable = () => {
   const entities = Core.getEntities()
   entities.forEach(e => {
@@ -41,6 +51,10 @@ const enable = () => {
   disabled.length = 0
 }
 
+const getArbitraryNumberInsteadOfSensibleControllerIdForKeyboard = id => {
+  return id == 'keyboard' ? '4': id
+}
+
 // states
 const waiting = {
   init: (b, e) => {
@@ -54,33 +68,33 @@ const waiting = {
 
 const registration = {
   codeLength: 4,
-  codes: {},
-  complete: (b) => {
-    return Object.keys(b.codes)
-    .map(k => b.codes[k].length == b.codeLength)
+  complete: (b, e) => {
+    return Object.keys(e.codes)
+    .map(k => e.codes[k].length == b.codeLength)
     .reduce((p, c) => p && c)
   },
   init: (b, e) => {
     console.log('registering')
 
     // clear codes
+    e.codes = {}
     Core.get('input')
     .controllerIds()
-    .concat(['keys']) // remove to disable keyboard
+    .concat(['keyboard']) // remove to disable keyboard
     .forEach(id => {
-      b.codes[id] = []
+      e.codes[id] = []
     })
 
     Core.get('input')
     .addClickListener('codeclick', (cid, btn) => {
       if(codeKeys.includes(btn)) {
         // console.log(`[CODE KEY]: cid: ${cid}, btn: ${btn}`)
-        const code = b.codes[cid]
-        if(code.length < 4) {
+        const code = e.codes[cid]
+        if(code.length < b.codeLength) {
           code.push(btn)
         }
         // console.log(`[CODE]: ${code} (cid: ${cid})`)
-        if(b.complete(b)) {
+        if(b.complete(b, e)) {
           Core.get('input')
           .removeClickListener('codeclick')
 
@@ -93,8 +107,22 @@ const registration = {
 }
 
 const reveal = {
+  pick: (codes) => {
+    const controllers = Object.keys(codes)
+    const i = Math.floor(Math.random() * controllers.length)
+    const k = controllers[i]
+    const c = codes[k]
+    return {
+      cid: k,
+      code: c
+    }
+  },
   init: (b, e) => {
     console.log('revealing')
+    const p = b.pick(e.codes)
+    const code = p.code.map(btn => btn.toUpperCase())
+    console.log(`[REVEAL] Player with code [${code}] is EVIL`)
+    spawnEvil(p.cid)
   },
   run: (b, e) => {
     if(ready()) transition(e, 'reveal', 'finished')

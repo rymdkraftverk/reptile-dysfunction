@@ -1,4 +1,5 @@
 import { Gamepad, Render, Key, Entity, Timer, Core } from 'l1-lite';
+import waitingForPlayers from './waiting-for-players'
 import qs from 'query-string';
 
 // consts
@@ -66,6 +67,8 @@ const waiting = {
   },
   init: (b, e) => {
     console.log('waiting...')
+    waitingForPlayers();
+    disable()
 
     Core.get('input')
     .addClickListener('ready', (cid, btn) => {
@@ -78,7 +81,6 @@ const waiting = {
     })
   },
   run: (b, e) => {
-    disable()
     if(b.complete()) {
       b.delay--
       if(b.delay <= 0) {

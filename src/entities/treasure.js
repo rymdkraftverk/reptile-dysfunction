@@ -22,7 +22,7 @@ function getRandomTime(){
 }
 
 function getRandomDuration(){
-
+  return (Math.random()*200) + 300;
 }
 
 const appearRandomly = {
@@ -72,6 +72,28 @@ const appearRandomly = {
     sprite.scale.y = 2;
     sprite.play()
     entity.behaviours['sync-sprite-body'] = syncSpriteBody;
+
+    entity.behaviours['delete-me'] = {
+      init: (b, e) => {
+        const duration = getRandomDuration();
+        b.duration = duration;
+        b.sprite = e.sprite;
+        b.timer = Timer.create(duration, ()=>{});
+      },
+      run: (b, e) => {
+        if (b.timer && b.timer.duration() < b.duration*0.3 && Math.round(b.timer.duration())%2===0){
+          Render.remove(e.sprite);
+        } else {
+          Render.add(b.sprite);
+        }
+
+        if (b.timer && b.timer.run(b, e)){
+          Core.remove(e);
+          Render.remove(e.sprite);
+          World.remove(Core.engine.world, [e.body]);
+        }
+      }
+    };
     World.add(Core.engine.world, [entity.body]);
     Render.add(sprite);
 

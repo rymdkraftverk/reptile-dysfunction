@@ -7,6 +7,7 @@ export default function treasure() {
   const entity = Entity.create('treasure');
 
   entity.behaviours['appearRandomly'] = appearRandomly;
+  appearRandomly.new(appearRandomly);
 
   Core.add(entity);
 }
@@ -26,9 +27,9 @@ function getRandomDuration(){
 }
 
 const appearRandomly = {
-  timer: Timer.create(getRandomTime(), (b, e)=>{
-    b.create(b, e);
-  }),
+  new: (b) => {
+    b.timer = Timer.create(getRandomTime(), (b, e)=>{});
+  },
   create: (b, entity)=>{
     console.log("create treasure")
     entity.sprite = Render.getAnimation([
@@ -91,6 +92,7 @@ const appearRandomly = {
         if (b.timer && b.timer.run(b, e)){
 
           e.behaviours['appearRandomly'] = appearRandomly;
+          appearRandomly.new(appearRandomly);
           b.timer.reset();
           delete e.behaviours['delete-me'];
     
@@ -109,6 +111,7 @@ const appearRandomly = {
     const { timer } = b;
     if (timer && timer.run(b, entity)){
       timer.reset();
+      b.create(b, entity);
       delete b.timer;
     }
     if (entity.sprite.position) {

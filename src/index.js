@@ -9,6 +9,7 @@ import addWave from './entities/wave.js'
 import initPhase from './entities/init-phase.js'
 import winCheck from './entities/win-check.js'
 import collisions from './collisions'
+import waitingForPlayers from './entities/waiting-for-players'
 
 import { addPlayer } from './entities/player'
 
@@ -29,7 +30,6 @@ import playerHandler from './entities/player-handler';
 import input from './entities/input';
 
 Render.createRenderer(1660, 930, sprites).then(() => {
-
   Core.createCore();
   Core.start();
   Debug.initDebugTools();
@@ -48,6 +48,6 @@ Render.createRenderer(1660, 930, sprites).then(() => {
   winCheck();
   collisions();
   addPlayer('4');
-
   Core.add(initPhase)
+  waitingForPlayers();
 });

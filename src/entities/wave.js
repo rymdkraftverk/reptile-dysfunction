@@ -30,8 +30,8 @@ module.exports = (initPos, direction) => {
   sprite.height = 16;
   sprite.anchor.x = 0.5;
   sprite.anchor.y = 0.5;
-  sprite.scale.x = 4;
-  sprite.scale.y = 4;
+  sprite.scale.x = 3;
+  sprite.scale.y = 3;
   sprite.play()
 
   Render.add(sprite);
@@ -41,7 +41,6 @@ module.exports = (initPos, direction) => {
   });
   sound.play();
 
-  //None of these three lines seem to do anything
   entity.body.friction = 0;
   entity.behaviours['sync-sprite-body'] = syncSpriteBody;
   entity.behaviours['movement'] = waveMovement(direction);

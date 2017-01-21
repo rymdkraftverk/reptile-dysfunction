@@ -1,4 +1,4 @@
-import { Gamepad, Key, Entity, Timer, Core } from 'l1-lite';
+import { Gamepad, Render, Key, Entity, Timer, Core } from 'l1-lite';
 import qs from 'query-string';
 
 // consts

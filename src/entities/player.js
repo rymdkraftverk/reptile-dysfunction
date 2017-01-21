@@ -4,6 +4,8 @@ import { Bodies, World, Events } from 'matter-js'
 import movementNormal from '../behaviours/movement-normal.js';
 import syncSpriteBody from '../behaviours/sync-sprite-body.js';
 import movementPushed from '../behaviours/movement-pushed.js';
+import push from '../behaviours/push.js';
+import summonWave from '../behaviours/summon-wave.js'
 
 const DEATH_TICKS = 100
 
@@ -17,11 +19,22 @@ const PLAYER2_START_POS = {
   y: 400
 };
 
+const PLAYER3_START_POS = {
+  x: 800,
+  y: 500
+};
+
+const PLAYER4_START_POS = {
+  x: 900,
+  y: 600
+};
+
 const PLAYER_SCALE = 4;
 
 export function addPlayer(id){
   const player = Entity.create('player' + parseInt(id)+1);
   player.type = 'player';
+  player.controllerId = id;
   let body;
   if (id==0){
     player.sprite = Render.getAnimation(['lizard1', 'lizard2'], 0.05);
@@ -31,6 +44,17 @@ export function addPlayer(id){
     player.sprite = Render.getAnimation(['lizard1-p2', 'lizard2-p2'], 0.05);
     body = Bodies.circle(PLAYER2_START_POS.x, PLAYER2_START_POS.y, 8*PLAYER_SCALE);
   }
+
+  else if (id==2){
+    player.sprite = Render.getAnimation(['lizard1-p3', 'lizard2-p3'], 0.05);
+    body = Bodies.circle(PLAYER3_START_POS.x, PLAYER3_START_POS.y, 8*PLAYER_SCALE);
+  }
+
+  else if (id==3){
+    player.sprite = Render.getAnimation(['lizard1-p4', 'lizard2-p4'], 0.05);
+    body = Bodies.circle(PLAYER4_START_POS.x, PLAYER4_START_POS.y, 8*PLAYER_SCALE);
+  }
+
   player.body = body;
   const { sprite } = player;
   sprite.width = 16;
@@ -71,6 +95,8 @@ export function addPlayer(id){
 
   player.behaviours['movement'] = movementNormal(id);
   player.behaviours['sync-sprite-body'] = syncSpriteBody;
+  player.behaviours['push'] = push;
+  player.behaviours['summonWave'] = summonWave(id);
 
   player.behaviours['killed'] = {
     deathTicks: DEATH_TICKS,

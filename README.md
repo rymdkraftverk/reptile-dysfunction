@@ -1,6 +1,6 @@
 ## Run
 
-`npm run build || npm run watch`
+`npm run build` or `npm run watch`
 
 `npm start`
 

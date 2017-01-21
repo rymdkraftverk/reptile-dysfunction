@@ -2,17 +2,17 @@ import {Core, Entity, Render} from 'l1-lite'
 import { Bodies, World, Events } from 'matter-js'
 
 export default (core) => {
-  
+
 const entity = Entity.create('map');
   entity.sprite = Render.getSprite('map');
   entity.type = 'map';
   entity.body = Bodies.circle(1660/2, (930/2)-15, 430, {
     isSensor: true
   });
-  
+
   Events.on(core.engine, 'collisionEnd', (event) => {
     const { pairs } = event;
-    
+
     let deleteMes = [];
     for (let i = 0, j = pairs.length; i != j; ++i) {
         const pair = pairs[i];
@@ -21,26 +21,11 @@ const entity = Entity.create('map');
         if (bodyA !== entity.body && bodyB !== entity.body) continue;
 
         if (bodyB.entity.type === 'map' && bodyA.entity.type === 'player') {
-          var obj = {
-            entity: bodyA.entity,
-            sprite: bodyA.sprite,
-            body: bodyA
-          }
-          deleteMes = deleteMes.concat(obj);
+          bodyA.entity.behaviours['killed'].killed = true;
         } else if (bodyA.entity.type === 'map' && bodyB.entity.type === 'player') {
-          var obj = {
-            entity: bodyB.entity,
-            sprite: bodyB.sprite,
-            body: bodyB
-          }
-          deleteMes = deleteMes.concat(obj);
+          bodyB.entity.behaviours['killed'].killed = true;
         }
     }
-    deleteMes.forEach(d => {
-      Core.remove(d.entity);
-      Render.remove(d.sprite);
-      World.remove(core.engine.world, [d.body]);
-    })
   });
 
   const { sprite } = entity;

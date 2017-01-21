@@ -6,6 +6,7 @@ import waveMovement from '../behaviours/wave-movement.js';
 import syncSpriteBody from '../behaviours/sync-sprite-body.js';
 
 const WAVE_LIFESPAN = 10 * 60;
+const WAVE_COLLISION_GROUP = -3;
 
 module.exports = (initPos, direction) => {
   const entity = Entity.create('wave');
@@ -29,6 +30,7 @@ module.exports = (initPos, direction) => {
   Body.rotate(entity.body, Math.PI/4+Math.PI/2);
   Body.setInertia(entity.body, Infinity);
   entity.body.entity = entity; //Whyyy?!
+  entity.body.collisionFilter.group = WAVE_COLLISION_GROUP;
   World.add(Core.engine.world, [entity.body]);
 
   sprite.width = 16;

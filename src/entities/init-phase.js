@@ -59,6 +59,7 @@ const getArbitraryNumberInsteadOfSensibleControllerIdForKeyboard = id => {
 
 // states
 const waiting = {
+  delay: 30,
   complete: () => {
     const count = controllerIds().length
     return readyPlayers.length == count
@@ -78,7 +79,13 @@ const waiting = {
   },
   run: (b, e) => {
     disable()
-    if(b.complete()) transition(e, 'waiting', 'registration')
+    if(b.complete()) {
+      b.delay--
+      if(b.delay <= 0) {
+        Core.get('waiting-for-players').destroy()
+        transition(e, 'waiting', 'registration')
+      }
+    }
   }
 }
 

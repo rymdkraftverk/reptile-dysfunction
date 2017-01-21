@@ -12,17 +12,17 @@ export default function treasure() {
 }
 
 function getRandomPosition(){
-  const x = (Math.random() * 700) + 500;
-  const y = (Math.random() * 700) + 100;
+  const x = Math.floor((Math.random() * 700) + 500);
+  const y = Math.floor((Math.random() * 700) + 100);
   return { x, y };
 }
 
 function getRandomTime(){
-  return (Math.random()*200) + 100;
+  return Math.floor((Math.random()*200) + 100);
 }
 
 function getRandomDuration(){
-  return (Math.random()*200) + 300;
+  return Math.floor((Math.random()*200) + 300);
 }
 
 const appearRandomly = {
@@ -87,10 +87,16 @@ const appearRandomly = {
           Render.add(b.sprite);
         }
 
+        //Remove the treasure after a set amount of time
         if (b.timer && b.timer.run(b, e)){
-          Core.remove(e);
+
+          e.behaviours['appearRandomly'] = appearRandomly;
+          b.timer.reset();
+          delete e.behaviours['delete-me'];
+    
           Render.remove(e.sprite);
           World.remove(Core.engine.world, [e.body]);
+          
         }
       }
     };
@@ -102,14 +108,11 @@ const appearRandomly = {
   run: (b, entity)=>{
     const { timer } = b;
     if (timer && timer.run(b, entity)){
+      timer.reset();
       delete b.timer;
     }
     if (entity.sprite.position) {
       entity.sprite.position.x += 5
     }
-
-
-
-
   }
 }

@@ -62,7 +62,7 @@ export function addPlayer(id){
   }
 
   else if (id==4){
-    player.sprite = Render.getAnimation('pikachu');
+    player.sprite = Render.getSprite('pikachu');
     body = Bodies.circle(PLAYER5_START_POS.x, PLAYER5_START_POS.y, 8*PLAYER_SCALE);
   }
 

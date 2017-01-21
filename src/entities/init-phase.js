@@ -53,24 +53,43 @@ const waiting = {
 }
 
 const registration = {
-  players: [],
+  codeLength: 4,
+  codes: {},
+  complete: (b) => {
+    return Object.keys(b.codes)
+    .map(k => b.codes[k].length == b.codeLength)
+    .reduce((p, c) => p && c)
+  },
   init: (b, e) => {
     console.log('registering')
+
+    // clear codes
+    Core.get('input')
+    .controllerIds()
+    .concat(['keys']) // remove to disable keyboard
+    .forEach(id => {
+      b.codes[id] = []
+    })
+
     Core.get('input')
     .addClickListener('codeclick', (cid, btn) => {
       if(codeKeys.includes(btn)) {
-        console.log(`[CODE KEY]: ${btn}`)
+        // console.log(`[CODE KEY]: cid: ${cid}, btn: ${btn}`)
+        const code = b.codes[cid]
+        if(code.length < 4) {
+          code.push(btn)
+        }
+        // console.log(`[CODE]: ${code} (cid: ${cid})`)
+        if(b.complete(b)) {
+          Core.get('input')
+          .removeClickListener('codeclick')
+
+          transition(e, 'registration', 'reveal')
+        }
       }
     })
   },
-  run: (b, e) => {
-    if(registered()) {
-      Core.get('input')
-      .removeClickListener('codeclick')
-
-      transition(e, 'registration', 'reveal')
-    }
-  }
+  run: () => {}
 }
 
 const reveal = {

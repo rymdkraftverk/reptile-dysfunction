@@ -22,11 +22,6 @@ const buttons = {
   keys: ['up', 'down', 'left', 'right', 'space', 'g', 'h', 'j', 'k', 'l']
 }
 
-const controllerIds = () => {
-  const pads = Gamepad.getGamepads()
-  return pads ? Object.keys(pads) : []
-}
-
 const entity = Entity.create('input');
 
 entity.registerKeys = () => buttons.keys.forEach(Key.add)
@@ -76,8 +71,13 @@ entity.behaviours['click'] = {
   }
 }
 
+entity.controllerIds = () => {
+  const pads = Gamepad.getGamepads()
+  return pads ? Object.keys(pads) : []
+}
+
 entity.eachBtn = (action) => {
-  const cids = controllerIds()
+  const cids = entity.controllerIds()
   cids.forEach(cid => {
     buttons.gamepad.forEach(btn => {
       action(cid, btn.btn)

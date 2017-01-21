@@ -1,5 +1,9 @@
-import { Key, Entity, Timer, Core } from 'l1-lite';
+import { Gamepad, Key, Entity, Timer, Core } from 'l1-lite';
 import qs from 'query-string';
+
+// consts
+const allowed = ['initPhase', 'input']
+const codeKeys = ['h', 'j', 'k', 'l']
 
 // pure
 const ready = () => ['up', 'down'].every(Key.isDown)
@@ -19,10 +23,10 @@ const initState = () => {
   return q.state || 'waiting'
 }
 
-const disableRest = entity => {
+const disable = () => {
   const entities = Core.getEntities()
   entities.forEach(e => {
-    if(e != entity) {
+    if(!allowed.includes(e.id)) {
       Core.remove(e)
       disabled.push(e)
     }
@@ -30,7 +34,7 @@ const disableRest = entity => {
   return disabled
 }
 
-const enableRest = () => {
+const enable = () => {
   disabled.forEach(e => {
     Core.add(e)
   })
@@ -43,17 +47,29 @@ const waiting = {
     console.log('waiting...')
   },
   run: (b, e) => {
-    disableRest(e)
+    disable(e)
     if(ready()) transition(e, 'waiting', 'registration')
   }
 }
 
 const registration = {
+  players: [],
   init: (b, e) => {
     console.log('registering')
+    Core.get('input')
+    .addClickListener('codeclick', (cid, btn) => {
+      if(codeKeys.includes(btn)) {
+        console.log(`[CODE KEY]: ${btn}`)
+      }
+    })
   },
   run: (b, e) => {
-    if(registered()) transition(e, 'registration', 'reveal')
+    if(registered()) {
+      Core.get('input')
+      .removeClickListener('codeclick')
+
+      transition(e, 'registration', 'reveal')
+    }
   }
 }
 
@@ -71,12 +87,13 @@ const finished = {
     console.log('finished!')
   },
   run: (b, e) => {
-    enableRest()
+    enable()
   }
 }
 
 // shitty state
 const disabled = []
+const codes = []
 
 // init
 const phase = Entity.create('initPhase');

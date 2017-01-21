@@ -63,7 +63,9 @@ const appearRandomly = {
 
     const { sprite } = entity;
     const { x, y } = getRandomPosition();
-    entity.body = Bodies.circle(x, y, 100);
+    entity.body = Bodies.circle(x, y, 100, {
+      isSensor: true
+    });
 
     sprite.width = 16;
     sprite.height = 16;

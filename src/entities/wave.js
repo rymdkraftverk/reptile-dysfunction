@@ -1,5 +1,5 @@
 import { Core, Render, Entity, Key, Gamepad} from 'l1-lite';
-import { World, Bodies } from 'matter-js'
+import { World, Bodies, Body } from 'matter-js'
 import { Howl } from 'howler';
 
 import waveMovement from '../behaviours/wave-movement.js';
@@ -22,7 +22,12 @@ module.exports = (initPos, direction) => {
   const { sprite } = entity;
 
   // Set position (Pixi)
-  entity.body = Bodies.circle(initPos.x, initPos.y, 80);
+  //entity.body = Bodies.circle(initPos.x, initPos.y, 80);
+  entity.body = Bodies.rectangle(700, 450, 200, 200, { 
+    chamfer: { radius: [200, 10, 350, 10] }
+  });
+  Body.rotate(entity.body, Math.PI/4+Math.PI/2);
+  Body.setInertia(entity.body, Infinity);
   entity.body.entity = entity; //Whyyy?!
   World.add(Core.engine.world, [entity.body]);
 

@@ -4,6 +4,8 @@
 
 `npm start`
 
+Use query parameter `state=finished` to by pass init phase
+
 ## Develop l1-lite simultaniously
 
 Change package.json to:

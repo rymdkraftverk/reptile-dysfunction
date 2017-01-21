@@ -1,4 +1,5 @@
 import { Core, Render, Entity, Timer, Key, Debug, Gamepad} from 'l1-lite';
+import { Howl } from 'howler';
 import sprites from './sprites.json';
 import map from './entities/map'
 import treasure from './entities/treasure'
@@ -35,6 +36,12 @@ Render.createRenderer(1660, 930, sprites).then(() => {
 
   Core.add(input)
   input.registerKeys()
+
+  const sound = new Howl({
+    src: ['sounds/song.wav'],
+    loop: true
+  });
+  sound.play();
 
   map(Core);
   treasure();

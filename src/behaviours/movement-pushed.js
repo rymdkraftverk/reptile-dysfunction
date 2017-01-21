@@ -4,7 +4,7 @@ import Matter from 'matter-js';
 const movementNormal = require('./movement-normal.js');
 
 const SPEED = 3;
-const MIN_SLIPPERY_SPEED = 0.4; //TODO Find reasonable value
+const MIN_SLIPPERY_SPEED = 2.5; 
 
 module.exports = (controllerId) => ({
   run: (b, e) => {

@@ -1,4 +1,5 @@
 import { Timer, Gamepad } from 'l1-lite';
+import { create } from '../entities/push';
 
 const push = {
   hasPushed: false,
@@ -12,6 +13,7 @@ const push = {
 
     if(Gamepad.isPressed(e.controllerId, 0)){
       b.hasPushed = true;
+      create(e);
       b.timer = Timer.create(300, (b, e)=>{
         b.hasPushed = false;
       });

@@ -3,6 +3,7 @@ import { Bodies, World } from 'matter-js'
 
 import movementNormal from '../behaviours/movement-normal.js';
 import syncSpriteBody from '../behaviours/sync-sprite-body.js';
+import push from '../behaviours/push.js';
 
 const DEATH_TICKS = 100
 
@@ -31,6 +32,7 @@ const PLAYER_SCALE = 4;
 export function addPlayer(id){
   const player = Entity.create('player' + parseInt(id)+1);
   player.type = 'player';
+  player.controllerId = id;
   let body;
   if (id==0){
     player.sprite = Render.getAnimation(['lizard1', 'lizard2'], 0.05);
@@ -71,6 +73,7 @@ export function addPlayer(id){
 
   player.behaviours['movement'] = movementNormal(id);
   player.behaviours['sync-sprite-body'] = syncSpriteBody;
+  player.behaviours['push'] = push;
 
   player.behaviours['killed'] = {
     deathTicks: DEATH_TICKS,

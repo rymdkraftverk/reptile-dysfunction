@@ -1,4 +1,5 @@
 import { Core, Render, Entity, Key, Gamepad, Timer} from 'l1-lite';
+import { getPlayers } from './player-handler';
 
 export default function winCheck(){
   const entity = Entity.create('winCheck');
@@ -17,7 +18,7 @@ const checkForWin = {
     b.timer--;
     if (b.timer===0) {
       b.timer = 200;
-      const players = Core.getEntities().filter(e => e.type === 'player');
+      const players = getPlayers();
       const evil = players.find(p => p.alignment === 'evil');
       let gameOver = true;
       

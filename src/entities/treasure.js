@@ -1,7 +1,10 @@
 import { Core, Render, Entity, Key, Gamepad, Timer} from 'l1-lite';
 import { World, Bodies } from 'matter-js'
 
+import { getPlayers } from './player-handler';
 import syncSpriteBody from '../behaviours/sync-sprite-body.js';
+
+let playersNear = [];
 
 export default function treasure() {
   const entity = Entity.create('treasure');
@@ -66,6 +69,7 @@ const appearRandomly = {
     entity.body = Bodies.circle(x, y, 100, {
       isSensor: true
     });
+    entity.body.entity = entity;
 
     sprite.width = 16;
     sprite.height = 16;
@@ -89,21 +93,18 @@ const appearRandomly = {
         } else {
           Render.add(b.sprite);
         }
+        if (b.timer && b.timer.duration() < b.duration-40){
+          e.behaviours['checkPlayers'] = checkPlayers;
+        }
 
         //Remove the treasure after a set amount of time
         if (b.timer && b.timer.run(b, e)){
-
-          e.behaviours['appearRandomly'] = appearRandomly;
-          appearRandomly.new(appearRandomly);
-          b.timer.reset();
-          delete e.behaviours['delete-me'];
-    
-          Render.remove(e.sprite);
-          World.remove(Core.engine.world, [e.body]);
+          treasureFail(b, e);
           
         }
       }
     };
+
     World.add(Core.engine.world, [entity.body]);
     Render.add(sprite);
 
@@ -120,4 +121,53 @@ const appearRandomly = {
       entity.sprite.position.x += 5
     }
   }
+}
+
+const checkPlayers = {
+  run: (b, e) => {
+    if (playersNear.length === getPlayers().length){
+      treasureWin(b, e);
+    }
+  }
+}
+
+function treasureFail(b, e){
+  e.behaviours['appearRandomly'] = appearRandomly;
+  appearRandomly.new(appearRandomly);
+  b.timer.reset();
+  delete e.behaviours['delete-me'];
+
+  Render.remove(e.sprite);
+  World.remove(Core.engine.world, [e.body]);
+}
+
+function treasureWin(b, e){
+  e.behaviours['appearRandomly'] = appearRandomly;
+  appearRandomly.new(appearRandomly);
+  e.behaviours['delete-me'].timer.reset();
+  delete e.behaviours['delete-me'];
+  delete e.behaviours['checkPlayers'];
+
+  Render.remove(e.sprite);
+  World.remove(Core.engine.world, [e.body]);
+}
+
+export function checkTreasureEnter(entityA, entityB){
+  if (entityA.id === 'treasure' && entityB.type === 'player'){
+    playersNear.push(entityB);
+  }
+  else if (entityB.id === 'treasure' && entityA.type === 'player'){
+    playersNear.push(entityA);
+  }
+  console.log('near treasure', playersNear);
+}
+
+export function checkTreasureLeave(entityA, entityB){
+  if (entityA.id === 'treasure' && entityB.type === 'player'){
+    playersNear = playersNear.filter(p => p.id !== entityB.id);
+  }
+  else if (entityB.id === 'treasure' && entityA.type === 'player'){
+    playersNear = playersNear.filter(p => p.id !== entityA.id);
+  }
+  console.log('near treasure', playersNear);
 }

@@ -22,4 +22,8 @@ playerHandler.behaviours['track-players'] = {
 
 Core.add(playerHandler);
 
+export function getPlayers() {
+  return Core.getEntities().filter(e => e.type === 'player');
+}
+
 export default playerHandler;

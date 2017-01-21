@@ -1,5 +1,6 @@
 import { Core, Render, Entity, Key, Gamepad} from 'l1-lite';
 import { World, Bodies } from 'matter-js'
+import { Howl } from 'howler';
 
 import waveMovement from '../behaviours/wave-movement.js';
 import syncSpriteBody from '../behaviours/sync-sprite-body.js';
@@ -8,6 +9,7 @@ const WAVE_LIFESPAN = 10 * 60;
 
 module.exports = (initPos, direction) => {
   const entity = Entity.create('wave');
+
   entity.sprite = Render.getAnimation([
     'wave-1-flip',
     'wave-1-flip',
@@ -34,6 +36,10 @@ module.exports = (initPos, direction) => {
 
   Render.add(sprite);
   Core.add(entity);
+  const sound = new Howl({
+    src: ['sounds/waves.wav']
+  });
+  sound.play();
 
   //None of these three lines seem to do anything
   entity.body.friction = 0;

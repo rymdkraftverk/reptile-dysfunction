@@ -1,41 +1,55 @@
-import { World, Core, Render, Entity, Key, Gamepad} from 'l1-lite';
-import Matter from 'matter-js'
+import { Core, Render, Entity, Key, Gamepad} from 'l1-lite';
+import { Bodies, World } from 'matter-js'
 
 import movementNormal from '../behaviours/movement-normal.js';
 
 const DEATH_TICKS = 100
 
-module.exports = core => {
-  const entity = Entity.create('lizard');
-  entity.type = 'player';
-  entity.sprite = Render.getAnimation(['lizard1', 'lizard2'], 0.05);
-  const { sprite } = entity;
+const PLAYER1_START_POS = {
+  x: 500,
+  y: 400
+};
 
-  // Set position (Pixi)
-  entity.body = core.Bodies.circle(800, 450, 10);
-  core.World.add(core.engine.world, [entity.body]);
+const PLAYER2_START_POS = {
+  x: 700,
+  y: 400
+};
+
+const PLAYER_SCALE = 4;
+
+export function addPlayer(id){
+  const player = Entity.create('player' + parseInt(id)+1);
+  player.type = 'player';
+  let body;
+  if (id==0){
+    player.sprite = Render.getAnimation(['lizard1', 'lizard2'], 0.05);
+    body = Bodies.circle(PLAYER1_START_POS.x, PLAYER1_START_POS.y, 8*PLAYER_SCALE);
+  }  
+  else if (id==1){
+    player.sprite = Render.getAnimation(['lizard1-p2', 'lizard2-p2'], 0.05);
+    body = Bodies.circle(PLAYER2_START_POS.x, PLAYER2_START_POS.y, 8*PLAYER_SCALE);
+  }
+  player.body = body;
+  const { sprite } = player;
+  sprite.width = 16;
+  sprite.height = 16;
+  sprite.anchor.x = 0.5;
+  sprite.anchor.y = 0.5;
+  sprite.scale.x = PLAYER_SCALE;
+  sprite.scale.y = PLAYER_SCALE;
+
+  World.add(Core.engine.world, [player.body]);
   /*
   sprite.position.y = 0;
   sprite.position.x = 0;
   */
-  sprite.width = 10;
-  sprite.height = 10;
-  sprite.anchor.x = 0.5;
-  sprite.anchor.y = 0.5;
-  sprite.scale.x = 4;
-  sprite.scale.y = 4;
-  sprite.play();
 
-  const { body } = entity;
-
-  body.entity = entity;
+  body.entity = player;
   body.sprite = sprite;
 
-  core.Render.add(sprite);
-  core.add(entity);
+  player.behaviours['movement'] = movementNormal(id);
 
-  entity.behaviours['movement'] = movementNormal;
-  entity.behaviours['killed'] =  {
+  player.behaviours['killed'] = {
     deathTicks: DEATH_TICKS,
     fireEntity: undefined,
     killed: false,
@@ -43,9 +57,9 @@ module.exports = core => {
       if (!b.killed) {
         return
       }
-
+      
       if (b.deathTicks == DEATH_TICKS && b.killed) {
-        entity.behaviours['movement'].run = (b, e) => {}
+        player.behaviours['movement'].run = (b, e) => {}
         const fire = Entity.create('fire')
         fire.animation = Render.getAnimation(['fire1', 'fire2', 'fire3'], 0.3)
         const { animation } = fire
@@ -66,7 +80,7 @@ module.exports = core => {
         Core.remove(b.fireEntity)
 
         Render.remove(e.sprite)
-        Matter.World.remove(core.engine.world, [e.body])
+        World.remove(Core.engine.world, [e.body])
         Core.remove(e)
         return
       }
@@ -76,4 +90,8 @@ module.exports = core => {
       b.deathTicks--;
     }
   }
+
+  sprite.play();
+  Render.add(sprite); 
+  Core.add(player);
 }

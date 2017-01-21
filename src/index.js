@@ -4,7 +4,6 @@ import map from './entities/map'
 
 import Matter from 'matter-js'
 
-import addPlayer from './entities/player.js'
 import addWave from './entities/wave.js'
 
 var Engine = Matter.Engine;
@@ -34,7 +33,6 @@ Render.createRenderer(1660, 930, sprites).then(() => {
   Key.add('left');
 
   map(Core);
-  addPlayer(Core);
   addWave(Core);
 
 });

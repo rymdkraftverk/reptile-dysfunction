@@ -1,5 +1,6 @@
 import { Core, Render, Entity, Key, Gamepad, Timer} from 'l1-lite';
 import { getPlayers } from './player-handler';
+import { Howl } from 'howler';
 
 export default function winCheck(){
   const entity = Entity.create('winCheck');
@@ -29,8 +30,20 @@ const checkForWin = {
       }
       else if (evil && players.length===1) {
         console.log("EVIL WON!");
+        Core.music.stop();
+        Core.music = new Howl({
+          src: ['sounds/fail.wav'],
+          loop: false
+        });
+        Core.music.play();
       } else if (!evil){
         console.log("GOOD WON");
+        Core.music.stop();
+        Core.music = new Howl({
+          src: ['sounds/victory.wav'],
+          loop: false
+        });
+        Core.music.play();
       } else {
         console.log("Players still alive...", players);
         gameOver = false;

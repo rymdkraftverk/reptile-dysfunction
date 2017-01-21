@@ -36,11 +36,12 @@ Render.createRenderer(1660, 930, sprites).then(() => {
   Core.add(input)
   input.registerKeys()
 
-  const sound = new Howl({
+  const music = new Howl({
     src: ['sounds/song.wav'],
     loop: true
   });
-  sound.play();
+  music.play();
+  Core.music = music
 
   map(Core);
   treasure();

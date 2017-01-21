@@ -1,5 +1,6 @@
 import { Gamepad, Render, Key, Entity, Timer, Core } from 'l1-lite';
 import waitingForPlayers from './waiting-for-players'
+import enterCode from './enter-code'
 import qs from 'query-string';
 
 // consts
@@ -100,6 +101,7 @@ const registration = {
   },
   init: (b, e) => {
     console.log('registering')
+    const prompt = enterCode()
 
     // clear codes
     e.codes = {}
@@ -120,6 +122,8 @@ const registration = {
         if(b.complete(b, e)) {
           Core.get('input')
           .removeClickListener('codeclick')
+
+          prompt.destroy()
 
           transition(e, 'registration', 'reveal')
         }

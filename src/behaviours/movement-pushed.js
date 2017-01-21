@@ -28,9 +28,9 @@ module.exports = (controllerId) => ({
     } else {
       y += Gamepad.axisDir(controllerId, 5) * SPEED;
     }
-    //const direction = Matter.Vector.create(x, y)
-    //Matter.Vector.div(direction, 1000)
-    //Matter.Body.applyForce(e.body, {x: 1, y: 0}, direction);
+    const direction = Matter.Vector.create(x, y)
+    const force = Matter.Vector.div(direction, 1000)
+    Matter.Body.applyForce(e.body, e.body.position, force);
 
     if(e.body.speed <= MIN_SLIPPERY_SPEED) {
       e.behaviours.movement = movementNormal(controllerId);

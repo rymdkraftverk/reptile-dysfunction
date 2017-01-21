@@ -16,6 +16,16 @@ const PLAYER2_START_POS = {
   y: 400
 };
 
+const PLAYER3_START_POS = {
+  x: 800,
+  y: 500
+};
+
+const PLAYER4_START_POS = {
+  x: 900,
+  y: 600
+};
+
 const PLAYER_SCALE = 4;
 
 export function addPlayer(id){
@@ -30,6 +40,17 @@ export function addPlayer(id){
     player.sprite = Render.getAnimation(['lizard1-p2', 'lizard2-p2'], 0.05);
     body = Bodies.circle(PLAYER2_START_POS.x, PLAYER2_START_POS.y, 8*PLAYER_SCALE);
   }
+
+  else if (id==2){
+    player.sprite = Render.getAnimation(['lizard1-p3', 'lizard2-p3'], 0.05);
+    body = Bodies.circle(PLAYER3_START_POS.x, PLAYER3_START_POS.y, 8*PLAYER_SCALE);
+  }
+
+  else if (id==3){
+    player.sprite = Render.getAnimation(['lizard1-p4', 'lizard2-p4'], 0.05);
+    body = Bodies.circle(PLAYER4_START_POS.x, PLAYER4_START_POS.y, 8*PLAYER_SCALE);
+  }
+
   player.body = body;
   const { sprite } = player;
   sprite.width = 16;

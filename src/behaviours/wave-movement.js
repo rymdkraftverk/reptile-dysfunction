@@ -1,7 +1,7 @@
 import { Key } from 'l1-lite';
 import { Body, Vector } from 'matter-js';
 
-const WAVE_SPEED = 5;
+const WAVE_SPEED = 15;
 
 module.exports = direction => ({
   run: (b, e) => {

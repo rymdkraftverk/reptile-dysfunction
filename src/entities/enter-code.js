@@ -29,7 +29,7 @@ export default () => {
   sprite.position.y = 15
 
   enterCodeEntity.destroy = () => {
-      for (let i = 0; i < spriteCollection.lenght; i++) {
+      for (let i = 0; i < spriteCollection.length; i++) {
         Render.remove(spriteCollection[i])
       }
       Render.remove(enterCodeEntity.sprite)

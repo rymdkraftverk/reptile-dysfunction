@@ -9,6 +9,7 @@ import addWave from './entities/wave.js'
 import initPhase from './entities/init-phase.js'
 import winCheck from './entities/win-check.js'
 import collisions from './collisions'
+import waitingForPlayers from './entities/waiting-for-players'
 
 import { addPlayer } from './entities/player'
 

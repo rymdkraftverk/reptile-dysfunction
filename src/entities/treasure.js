@@ -112,7 +112,8 @@ const appearRandomly = {
     Render.add(sprite);
 
     const sound = new Howl({
-      src: ['sounds/ruby.wav']
+      src: ['sounds/ruby.wav'],
+      volume: 0.5
     });
     sound.play();
 
@@ -188,7 +189,6 @@ export function checkTreasureEnter(entityA, entityB){
   else if (entityB.id === 'treasure' && entityA.type === 'player'){
     playersNear.push(entityA);
   }
-  console.log('near treasure', playersNear);
 }
 
 export function checkTreasureLeave(entityA, entityB){
@@ -198,5 +198,4 @@ export function checkTreasureLeave(entityA, entityB){
   else if (entityB.id === 'treasure' && entityA.type === 'player'){
     playersNear = playersNear.filter(p => p.id !== entityA.id);
   }
-  console.log('near treasure', playersNear);
 }

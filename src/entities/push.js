@@ -1,5 +1,6 @@
 import { Core, Render, Entity, Key, Gamepad, Timer} from 'l1-lite';
 import { Bodies, World } from 'matter-js'
+import { Howl } from 'howler';
 
 export function create(creator){
   const {x, y} = creator.body.position;
@@ -12,7 +13,12 @@ export function create(creator){
   World.add(Core.engine.world, [push.body]);
   Core.add(push);
 
-  console.log('push')
+  const sound = new Howl({
+    src: ['sounds/hit.wav'],
+    volume: 0.8
+  });
+  sound.play();
+
   push.behaviours['delete-me'] = {
     timer: Timer.create(5, ()=>{}),
     run: (b, e) => {

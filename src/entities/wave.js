@@ -29,6 +29,7 @@ module.exports = (initPos, direction) => {
   });
   Body.rotate(entity.body, Math.PI/4+Math.PI/2);
   Body.setInertia(entity.body, Infinity);
+  entity.body.restitution = 1;
   entity.body.entity = entity; //Whyyy?!
   entity.body.collisionFilter.group = WAVE_COLLISION_GROUP;
   World.add(Core.engine.world, [entity.body]);

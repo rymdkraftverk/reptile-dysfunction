@@ -5,9 +5,13 @@ const movementNormal = require('./movement-normal.js');
 
 const SPEED = 3;
 const MIN_SLIPPERY_SPEED = 2.5; 
+const DISABLE_DURATION = 2; 
 
 module.exports = (controllerId) => ({
+  duration: DISABLE_DURATION,
   run: (b, e) => {
+    if (b.duration-- > 0)
+      return;
     var x = 0;
     var y = 0;
     if (Key.isDown('right')) {

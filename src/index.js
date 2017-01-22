@@ -48,6 +48,6 @@ Render.createRenderer(1660, 930, sprites).then(() => {
   treasure();
   winCheck();
   collisions();
-  addPlayer('4');
+  //addPlayer('4');
   Core.add(initPhase)
 });

@@ -143,6 +143,12 @@ function treasureFail(b, e){
   Render.remove(e.sprite);
   World.remove(Core.engine.world, [e.body]);
 
+  const sound = new Howl({
+    src: ['sounds/treasureFail.wav'],
+    volume: 0.2
+  });
+  sound.play();
+
   //Make all good players controlled reversed
   const good = getGoodPlayers();
   good.forEach(e => {

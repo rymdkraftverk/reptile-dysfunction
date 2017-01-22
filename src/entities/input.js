@@ -55,8 +55,10 @@ entity.behaviours['click'] = {
   },
   run: (b, e) => {
     e.eachBtn((cid, btn) => {
+      const pad = cid != 'keyboard'
+      if(pad) btn = btn.i
       const pressedLast = b.tracker[cid][btn]
-      const pressedNow = Gamepad.isPressed(cid, btn) || Key.isDown(btn)
+      const pressedNow = pad ? Gamepad.isPressed(cid, btn) : Key.isDown(btn)
 
       // click has occured
       if(pressedLast && !pressedNow) {
@@ -80,7 +82,7 @@ entity.eachBtn = (action) => {
   const cids = entity.controllerIds()
   cids.forEach(cid => {
     buttons.gamepad.forEach(btn => {
-      action(cid, btn.btn)
+      action(cid, btn)
     })
   })
 

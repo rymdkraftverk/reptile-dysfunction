@@ -15,18 +15,26 @@ export default () => {
   sprite.position.x = 455
   sprite.position.y = 20
 
-  let newPlayers = 0
+  let newPlayers = []
   let currentPlayers = 0
   let playerSprites = []
 
+  const sprites = {
+    '0': 'lizard1',
+    '1': 'lizard2',
+    '2': 'lizard3',
+    '3': 'lizard4'
+  }
+
   waitingForPlayersEntity.behaviours['add-player'] = {
     add: (newPlayer) => {
-      newPlayers++
+      newPlayers.push(newPlayer)
     },
     run: (b, e) => {
-      if (newPlayers > 0){
+      if (newPlayers.length > 0){
         const newPlayerEntity = Entity.create('waiting-for-player-player-' + currentPlayers)
-        newPlayerEntity.sprite = Render.getSprite('lizard1')
+        const sprite = sprites[newPlayers.pop()]
+        newPlayerEntity.sprite = Render.getSprite(sprite)
         newPlayerEntity.type = 'waiting-for-player-player'
         newPlayerEntity.sprite.width = 12
         newPlayerEntity.sprite.height = 13
@@ -38,7 +46,6 @@ export default () => {
         newPlayerEntity.sprite.position.y = 170
 
         Render.add(newPlayerEntity.sprite)
-        newPlayers--
         currentPlayers++
         playerSprites = playerSprites.concat(newPlayerEntity.sprite)
       }

@@ -111,6 +111,11 @@ const appearRandomly = {
     World.add(Core.engine.world, [entity.body]);
     Render.add(sprite);
 
+    const sound = new Howl({
+      src: ['sounds/ruby.wav']
+    });
+    sound.play();
+
     entity.body.friction = 0;
   },
   run: (b, entity)=>{
@@ -167,7 +172,7 @@ function treasureWin(b, e){
   World.remove(Core.engine.world, [e.body]);
 
   const sound = new Howl({
-    src: ['sounds/ruby.wav']
+    src: ['sounds/powerup.wav']
   });
   sound.play();
 

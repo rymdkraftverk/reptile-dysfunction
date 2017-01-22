@@ -1,5 +1,6 @@
 import { Core, Render, Entity, Key, Gamepad, Timer} from 'l1-lite';
 import { World, Bodies } from 'matter-js'
+import { Howl } from 'howler';
 
 import { getPlayers, getGoodPlayers, getEvilPlayer } from './player-handler';
 import syncSpriteBody from '../behaviours/sync-sprite-body.js';
@@ -160,9 +161,14 @@ function treasureWin(b, e){
   Render.remove(e.sprite);
   World.remove(Core.engine.world, [e.body]);
 
+  const sound = new Howl({
+    src: ['sounds/ruby.wav']
+  });
+  sound.play();
+
   //Make the evil player controlls reversed
-  // const evil = getEvilPlayer();
-  // evil['movement-normal'] = reversed;
+  const evil = getEvilPlayer();
+  evil.behaviours['movement-normal'] = reversed(evil.controllerId);
 }
 
 export function checkTreasureEnter(entityA, entityB){

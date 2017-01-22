@@ -27,7 +27,6 @@ module.exports = (initPos, direction) => {
   entity.body = Bodies.rectangle(initPos.x, initPos.y, 150, 150, { 
                 chamfer: { radius: [170, 0, 150, 0] }
   });
-  */
   Body.rotate(entity.body, Math.PI/4+Math.PI/2);
   Body.setInertia(entity.body, Infinity);
   entity.body.restitution = 1;

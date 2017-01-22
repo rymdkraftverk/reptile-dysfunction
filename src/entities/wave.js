@@ -1,5 +1,5 @@
 import { Core, Render, Entity, Key, Gamepad} from 'l1-lite';
-import { World, Bodies, Body } from 'matter-js'
+import { World, Bodies, Body, Vector } from 'matter-js'
 import { Howl } from 'howler';
 
 import waveMovement from '../behaviours/wave-movement.js';
@@ -12,12 +12,12 @@ module.exports = (initPos, direction) => {
   const entity = Entity.create('wave');
 
   entity.sprite = Render.getAnimation([
-    'wave-1-flip',
-    'wave-1-flip',
-    'wave-2-flip',
-    'wave-2-flip',
-    'wave-3-flip',
-    'wave-3-flip'
+    'wave-1',
+    'wave-1',
+    'wave-2',
+    'wave-2',
+    'wave-3',
+    'wave-3'
     ], 0.3);
   entity.type = 'wave';
   const { sprite } = entity;
@@ -33,6 +33,13 @@ module.exports = (initPos, direction) => {
   entity.body.entity = entity; //Whyyy?!
   entity.body.collisionFilter.group = WAVE_COLLISION_GROUP;
   World.add(Core.engine.world, [entity.body]);
+
+  let angle = Math.atan(direction.y/direction.x);
+  if (direction.x < 0)
+    angle += Math.PI;
+  //angle += Math.PI;
+  entity.sprite.rotation += angle;
+  Body.rotate(entity.body, angle);
 
   sprite.width = 16;
   sprite.height = 16;

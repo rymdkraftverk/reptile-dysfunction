@@ -57,5 +57,7 @@
   "push4",
   "push5",
   "push6",
-  "push7"
+  "push7",
+  "winner-evil",
+  "winner-good"
 ]

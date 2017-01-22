@@ -23,8 +23,6 @@ module.exports = (initPos, direction) => {
   entity.type = 'wave';
   const { sprite } = entity;
 
-  // Set position (Pixi)
-  //entity.body = Bodies.circle(initPos.x, initPos.y, 80);
   entity.body = Bodies.rectangle(initPos.x, initPos.y, 150, 150, { 
                 chamfer: { radius: [170, 0, 150, 0] }
   });
@@ -38,7 +36,6 @@ module.exports = (initPos, direction) => {
   let angle = Math.atan(direction.y/direction.x);
   if (direction.x < 0)
     angle += Math.PI;
-  //angle += Math.PI;
   entity.sprite.rotation += angle;
   Body.rotate(entity.body, angle);
 
@@ -66,7 +63,7 @@ module.exports = (initPos, direction) => {
       b.timer++;
       if(b.timer > WAVE_LIFESPAN) {
         Render.remove(e.sprite)
-        Core.remove(e) //TODO Bug: Core.remove removes all currently existing wave entities (but not their sprites), rather than just the one we're interested in.
+        Core.remove(e)
       }
     }
   }

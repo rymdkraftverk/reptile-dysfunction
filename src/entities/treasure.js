@@ -134,7 +134,7 @@ const appearRandomly = {
 
 const checkPlayers = {
   run: (b, e) => {
-    if (playersNear.length === getPlayers().length){
+    if (playersNear.length === getPlayers().length - 1){
       treasureWin(b, e);
     }
   }

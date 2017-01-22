@@ -25,7 +25,7 @@ function getRandomPosition(){
 }
 
 function getRandomTime(){
-  return Math.floor((Math.random()*200) + 600);
+  return Math.floor((Math.random()*200) + 500);
 }
 
 function getRandomDuration(){
@@ -111,6 +111,12 @@ const appearRandomly = {
     World.add(Core.engine.world, [entity.body]);
     Render.add(sprite);
 
+    const sound = new Howl({
+      src: ['sounds/ruby.wav'],
+      volume: 0.5
+    });
+    sound.play();
+
     entity.body.friction = 0;
   },
   run: (b, entity)=>{
@@ -143,10 +149,15 @@ function treasureFail(b, e){
   Render.remove(e.sprite);
   World.remove(Core.engine.world, [e.body]);
 
+  const sound = new Howl({
+    src: ['sounds/treasureFail.wav'],
+    volume: 0.2
+  });
+  sound.play();
+
   //Make all good players controlled reversed
   const good = getGoodPlayers();
   good.forEach(e => {
-    console.log('applying reverse');
     e.behaviours['movement-normal'] = reversed(e.controllerId);
   });
 }
@@ -162,7 +173,7 @@ function treasureWin(b, e){
   World.remove(Core.engine.world, [e.body]);
 
   const sound = new Howl({
-    src: ['sounds/ruby.wav']
+    src: ['sounds/powerup.wav']
   });
   sound.play();
 
@@ -178,7 +189,6 @@ export function checkTreasureEnter(entityA, entityB){
   else if (entityB.id === 'treasure' && entityA.type === 'player'){
     playersNear.push(entityA);
   }
-  console.log('near treasure', playersNear);
 }
 
 export function checkTreasureLeave(entityA, entityB){
@@ -188,5 +198,4 @@ export function checkTreasureLeave(entityA, entityB){
   else if (entityB.id === 'treasure' && entityA.type === 'player'){
     playersNear = playersNear.filter(p => p.id !== entityA.id);
   }
-  console.log('near treasure', playersNear);
 }

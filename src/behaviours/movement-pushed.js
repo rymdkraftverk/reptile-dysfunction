@@ -6,11 +6,13 @@ const movementNormal = require('./movement-normal.js');
 const SPEED = 3;
 const MIN_SLIPPERY_SPEED = 2.5; 
 const DISABLE_DURATION = 2; 
+const MAX_SPEED = 5;
+const MAX_TIME = 100;
 
 module.exports = (controllerId) => ({
-  duration: DISABLE_DURATION,
+  duration: 0,
   run: (b, e) => {
-    if (b.duration-- > 0)
+    if (b.duration++ < DISABLE_DURATION)
       return;
     var x = 0;
     var y = 0;
@@ -35,8 +37,26 @@ module.exports = (controllerId) => ({
     const direction = Matter.Vector.create(x, y)
     const force = Matter.Vector.div(direction, 1000)
     Matter.Body.applyForce(e.body, e.body.position, force);
+    
+    if (e.body.velocity.x > MAX_SPEED ){
+      const vector = Matter.Vector.create(MAX_SPEED, e.body.velocity.y);
+      Matter.Body.setVelocity(e.body, vector);
+    }
+    else if (e.body.velocity.x < -MAX_SPEED ){
+      const vector = Matter.Vector.create(-MAX_SPEED, e.body.velocity.y);
+      Matter.Body.setVelocity(e.body, vector);
+    }
 
-    if(e.body.speed <= MIN_SLIPPERY_SPEED) {
+    if (e.body.velocity.y > MAX_SPEED ){
+      const vector = Matter.Vector.create(e.body.velocity.x, MAX_SPEED);
+      Matter.Body.setVelocity(e.body, vector);
+    }
+    else if (e.body.velocity.y < -MAX_SPEED ){
+      const vector = Matter.Vector.create(e.body.velocity.x, -MAX_SPEED);
+      Matter.Body.setVelocity(e.body, vector);
+    }
+
+    if(e.body.speed <= MIN_SLIPPERY_SPEED || b.duration > MAX_TIME) {
       e.behaviours.movement = movementNormal(controllerId);
     }
   }

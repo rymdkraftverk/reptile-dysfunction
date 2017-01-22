@@ -45,7 +45,7 @@ export function addPlayer(id){
   if (id==0){
     player.sprite = Render.getAnimation(['lizard1', 'lizard2'], 0.05);
     body = Bodies.circle(PLAYER1_START_POS.x, PLAYER1_START_POS.y, 8*PLAYER_SCALE);
-  }  
+  }
   else if (id==1){
     player.sprite = Render.getAnimation(['lizard1-p2', 'lizard2-p2'], 0.05);
     body = Bodies.circle(PLAYER2_START_POS.x, PLAYER2_START_POS.y, 8*PLAYER_SCALE);
@@ -115,11 +115,12 @@ export function addPlayer(id){
     deathTicks: DEATH_TICKS,
     fireEntity: undefined,
     killed: false,
+    pushedAnimation: undefined,
     run: (b, e) => {
       if (!b.killed) {
         return
       }
-      
+
       if (b.deathTicks == DEATH_TICKS && b.killed) {
         player.behaviours['movement'].run = (b, e) => {}
         const fire = Entity.create('fire')
@@ -158,6 +159,6 @@ export function addPlayer(id){
   }
 
   sprite.play();
-  Render.add(sprite); 
+  Render.add(sprite);
   Core.add(player);
 }

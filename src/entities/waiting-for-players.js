@@ -21,9 +21,9 @@ export default () => {
 
   const sprites = {
     '0': 'lizard1',
-    '1': 'lizard2',
-    '2': 'lizard3',
-    '3': 'lizard4'
+    '1': 'lizard1-p2',
+    '2': 'lizard1-p3',
+    '3': 'lizard1-p4'
   }
 
   waitingForPlayersEntity.behaviours['add-player'] = {

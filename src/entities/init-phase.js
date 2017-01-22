@@ -5,10 +5,13 @@ import evilCode from './evil-code'
 import qs from 'query-string';
 
 // consts
-const allowed = ['initPhase', 'input', 'waiting-for-players']
+const allowed = ['initPhase', 'input', 'waiting-for-players', 'playerHandler']
 const codeKeys = ['h', 'j', 'k', 'l', '0', '1', '2', '3']
 const kbcode = {
   h: 'r', j: 'g', k: 'b', l: 'y'
+}
+const padcode = {
+  0: 'g', 1: 'r', 2: 'b', 3: 'y'
 }
 
 // pure
@@ -39,7 +42,7 @@ const spawnEvil = cid => {
   const e = Core.getEntities()
   const players = disabled.filter(e => e.type == 'player')
   const evil = players.filter(e => e.controllerId == kid)
-  if(!evil) throw new Error('No evil found')
+  if(!evil || !evil.length) throw new Error('No evil found')
   if(evil.length != 1) throw new Error('Too much evil found')
   evil[0].alignment = 'evil'
 }
@@ -89,6 +92,7 @@ const waiting = {
     })
   },
   run: (b, e) => {
+    disable()
     if(b.complete()) {
       b.delay--
       if(b.delay <= 0) {
@@ -156,9 +160,10 @@ const reveal = {
     console.log('revealing')
     const p = b.pick(e.codes)
 
-    if(p.cid == 'keyboard') p.code = p.code.map(k => kbcode[k])
-    console.log(`[REVEAL] Player with code [${p.code}] is EVIL`)
-    b.evilSign = evilCode(p.code)
+    let map = p.cid == 'keyboard' ? kbcode: padcode
+    const rgbyCode = p.code.map(k => map[k])
+    console.log(`[REVEAL] Player with code [${rgbyCode}] is EVIL`)
+    b.evilSign = evilCode(rgbyCode)
 
     spawnEvil(p.cid)
   },

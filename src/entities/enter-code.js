@@ -3,6 +3,13 @@ import { Core, Render, Entity, Timer, Key, Debug, Gamepad} from 'l1-lite';
 let rowCount = 0;
 const rowRegistry = {}
 const columnRegistry = [0,0,0,0,0]
+const spriteMap = {
+  '0': ['lizard1', 'lizard2'],
+  '1': ['lizard1-p2', 'lizard2-p2'],
+  '2': ['lizard1-p3', 'lizard2-p3'],
+  '3': ['lizard1-p4', 'lizard2-p4'],
+  '4': ['pikachu']
+}
 
 let spriteCollection = []
 
@@ -31,6 +38,20 @@ export default () => {
   enterCodeEntity.addKey = (pid) => {
     if (rowRegistry[pid] === undefined) {
       rowRegistry[pid] = rowCount
+
+      const animation = Render.getAnimation(spriteMap[pid], 0.05)
+      animation.width = 16;
+      animation.height = 16;
+      animation.anchor.x = 0.5;
+      animation.anchor.y = 0.5;
+      animation.scale.x = 4;
+      animation.scale.y = 4;
+      animation.position.x = 520
+      animation.position.y = 190 + (rowCount * 100)
+
+      animation.play()
+      Render.add(animation)
+      spriteCollection = spriteCollection.concat(animation)
       rowCount++
     }
 

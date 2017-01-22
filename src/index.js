@@ -11,6 +11,8 @@ import winCheck from './entities/win-check.js'
 import collisions from './collisions'
 import waitingForPlayers from './entities/waiting-for-players'
 
+import enterCode from './entities/enter-code'
+
 import { addPlayer } from './entities/player'
 
 var Engine = Matter.Engine;

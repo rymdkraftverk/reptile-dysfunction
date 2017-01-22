@@ -128,6 +128,8 @@ const registration = {
         const code = e.codes[cid]
         if(code.length < b.codeLength) {
           code.push(btn)
+          let map = cid == 'keyboard' ? kbcode: padcode
+          // prompt.addKey(cid, map[btn])
         }
         // console.log(`[CODE]: ${code} (cid: ${cid})`)
         if(b.complete(b, e)) {

@@ -31,7 +31,7 @@ const initState = () => {
 const controllerIds = () => {
   return Core.get('input')
   .controllerIds()
-  //.concat(['keyboard']) // remove to disable keyboard
+  .concat(['keyboard']) // remove to disable keyboard
 }
 
 const anounceEvil = code => {

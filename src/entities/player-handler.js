@@ -26,4 +26,14 @@ export function getPlayers() {
   return Core.getEntities().filter(e => e.type === 'player');
 }
 
+export function getGoodPlayers() {
+  const players = getPlayers();
+  return players.filter(p => p.alignment !== 'evil');
+}
+
+export function getEvilPlayer() {
+  const players = getPlayers();
+  return players.find(p => p.alignment === 'evil');
+}
+
 export default playerHandler;

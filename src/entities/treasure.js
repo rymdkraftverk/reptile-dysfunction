@@ -1,8 +1,10 @@
 import { Core, Render, Entity, Key, Gamepad, Timer} from 'l1-lite';
 import { World, Bodies } from 'matter-js'
 
-import { getPlayers } from './player-handler';
+import { getPlayers, getGoodPlayers, getEvilPlayer } from './player-handler';
 import syncSpriteBody from '../behaviours/sync-sprite-body.js';
+
+import reversed from '../behaviours/movement-reversed';
 
 let playersNear = [];
 
@@ -22,7 +24,7 @@ function getRandomPosition(){
 }
 
 function getRandomTime(){
-  return Math.floor((Math.random()*200) + 100);
+  return Math.floor((Math.random()*200) + 600);
 }
 
 function getRandomDuration(){
@@ -139,6 +141,13 @@ function treasureFail(b, e){
 
   Render.remove(e.sprite);
   World.remove(Core.engine.world, [e.body]);
+
+  //Make all good players controlled reversed
+  const good = getGoodPlayers();
+  good.forEach(e => {
+    console.log('applying reverse');
+    e.behaviours['movement-normal'] = reversed(e.controllerId);
+  });
 }
 
 function treasureWin(b, e){
@@ -150,6 +159,10 @@ function treasureWin(b, e){
 
   Render.remove(e.sprite);
   World.remove(Core.engine.world, [e.body]);
+
+  //Make the evil player controlls reversed
+  // const evil = getEvilPlayer();
+  // evil['movement-normal'] = reversed;
 }
 
 export function checkTreasureEnter(entityA, entityB){

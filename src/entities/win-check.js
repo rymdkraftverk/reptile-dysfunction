@@ -1,6 +1,6 @@
 import { Core, Render, Entity, Key, Gamepad, Timer} from 'l1-lite';
-import { getPlayers } from './player-handler';
 import { Howl } from 'howler';
+import { getPlayers, getEvilPlayer } from './player-handler';
 
 export default function winCheck(){
   const entity = Entity.create('winCheck');
@@ -20,7 +20,7 @@ const checkForWin = {
     if (b.timer===0) {
       b.timer = 200;
       const players = getPlayers();
-      const evil = players.find(p => p.alignment === 'evil');
+      const evil = getEvilPlayer();
       let gameOver = true;
       
       console.log("Checking if someone has won...");

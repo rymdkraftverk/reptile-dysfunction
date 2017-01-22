@@ -7,9 +7,10 @@ import syncSpriteBody from '../behaviours/sync-sprite-body.js';
 
 const WAVE_LIFESPAN = 10 * 60;
 const WAVE_COLLISION_GROUP = -3234;
+let wave_counter = 0;
 
 module.exports = (initPos, direction) => {
-  const entity = Entity.create('wave');
+  const entity = Entity.create(wave_counter++);
 
   entity.sprite = Render.getAnimation([
     'wave-1',

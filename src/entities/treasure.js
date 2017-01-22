@@ -25,7 +25,7 @@ function getRandomPosition(){
 }
 
 function getRandomTime(){
-  return Math.floor((Math.random()*200) + 600);
+  return Math.floor((Math.random()*200) + 500);
 }
 
 function getRandomDuration(){
@@ -152,7 +152,6 @@ function treasureFail(b, e){
   //Make all good players controlled reversed
   const good = getGoodPlayers();
   good.forEach(e => {
-    console.log('applying reverse');
     e.behaviours['movement-normal'] = reversed(e.controllerId);
   });
 }

@@ -50,5 +50,4 @@ Render.createRenderer(1660, 930, sprites).then(() => {
   collisions();
   addPlayer('4');
   Core.add(initPhase)
-
 });

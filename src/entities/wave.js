@@ -65,7 +65,7 @@ module.exports = (initPos, direction) => {
       b.timer++;
       if(b.timer > WAVE_LIFESPAN) {
         Render.remove(e.sprite)
-        Core.remove(e)
+        Core.remove(e) //TODO Bug: Core.remove removes all currently existing wave entities (but not their sprites), rather than just the one we're interested in.
       }
     }
   }

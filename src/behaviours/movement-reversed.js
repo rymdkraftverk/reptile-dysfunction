@@ -1,8 +1,11 @@
 import { Key, Gamepad } from 'l1-lite';
 import Matter from 'matter-js';
 
+import normalMovement from './movement-normal'
+
 const SPEED = 3;
 module.exports = (controllerId) => ({
+  time: 400,
   run: (b, e) => {
     Matter.Body.setVelocity(e.body, Matter.Vector.create(0, 0))
     var x = 0;
@@ -28,5 +31,11 @@ module.exports = (controllerId) => ({
     const direction = Matter.Vector.create(x, y)
     //Matter.Body.applyForce(e.body, e.body, direction);
     Matter.Body.setVelocity(e.body, direction)
+
+    b.time--;
+    if (b.time<=0){
+      e.behaviours['movement-normal'] = normalMovement(e.controllerId);
+      b.time = 300;
+    }
   }
 })

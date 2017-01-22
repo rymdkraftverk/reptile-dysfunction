@@ -87,7 +87,7 @@ const waiting = {
         readyPlayers.push(cid)
 
         Core.get('waiting-for-players')
-        .behaviours['add-player'].add()
+        .behaviours['add-player'].add(cid)
       }
     })
   },

@@ -156,9 +156,9 @@ const reveal = {
     console.log('revealing')
     const p = b.pick(e.codes)
 
-    console.log(`[REVEAL] Player with code [${p.code}] is EVIL`)
     if(p.cid == 'keyboard') p.code = p.code.map(k => kbcode[k])
-    b.evilSign = evilCode(grbyCode)
+    console.log(`[REVEAL] Player with code [${p.code}] is EVIL`)
+    b.evilSign = evilCode(p.code)
 
     spawnEvil(p.cid)
   },

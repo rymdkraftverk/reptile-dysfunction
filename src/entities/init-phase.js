@@ -87,7 +87,7 @@ const waiting = {
         readyPlayers.push(cid)
 
         Core.get('waiting-for-players')
-        .behaviours['add-player'].add()
+        .behaviours['add-player'].add(cid)
       }
     })
   },
@@ -128,6 +128,7 @@ const registration = {
         const code = e.codes[cid]
         if(code.length < b.codeLength) {
           code.push(btn)
+          // prompt.addKey(cid)
         }
         // console.log(`[CODE]: ${code} (cid: ${cid})`)
         if(b.complete(b, e)) {

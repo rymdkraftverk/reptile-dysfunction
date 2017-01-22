@@ -86,11 +86,11 @@ export function addPlayer(id){
       const pair = pairs[i];
       const { bodyA, bodyB } = pair;
 	  if (bodyA.entity && bodyB.entity) {
-        if (bodyA.entity.type === 'player' && (bodyB.entity.type === 'player' || bodyB.entity.type === 'wave')) {
+        if (bodyA.entity.type === 'player' && (bodyB.entity.type === 'player' || bodyB.entity.type === 'wave' || bodyB.entity.type === 'push')) {
           const idA = bodyA.entity.id;
           bodyA.entity.behaviours.movement = movementPushed(idA);
         }
-        if (bodyB.entity.type === 'player' && (bodyA.entity.type === 'player' || bodyA.entity.type === 'wave')) {
+        if (bodyB.entity.type === 'player' && (bodyA.entity.type === 'player' || bodyA.entity.type === 'wave' || bodyA.entity.type === 'push')) {
           const idB = bodyB.entity.id;
           bodyB.entity.behaviours.movement = movementPushed(idB);
         }
@@ -108,7 +108,7 @@ export function addPlayer(id){
 
   player.behaviours['movement'] = movementNormal(id);
   player.behaviours['sync-sprite-body'] = syncSpriteBody;
-  player.behaviours['push'] = push;
+  player.behaviours['push'] = push();
   player.behaviours['summonWave'] = summonWave(id);
 
   player.behaviours['killed'] = {

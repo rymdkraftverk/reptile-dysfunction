@@ -5,7 +5,7 @@ const movementNormal = require('./movement-normal.js');
 
 const SPEED = 3;
 const MIN_SLIPPERY_SPEED = 2.5; 
-const DISABLE_DURATION = 2; 
+const DISABLE_DURATION = 20; 
 const MAX_SPEED = 5;
 const MAX_TIME = 100;
 

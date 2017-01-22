@@ -50,6 +50,7 @@
   "code-red",
   "code-yellow",
   "code-green",
+  "code-gray",
   "evil-code",
   "push1",
   "push2",
@@ -57,5 +58,7 @@
   "push4",
   "push5",
   "push6",
-  "push7"
+  "push7",
+  "winner-evil",
+  "winner-good"
 ]

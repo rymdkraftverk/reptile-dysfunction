@@ -1,6 +1,8 @@
 import { Core, Render, Entity, Key, Gamepad, Timer} from 'l1-lite';
 import { Howl } from 'howler';
 import { getPlayers, getEvilPlayer } from './player-handler';
+import winnerGood from './winner-good';
+import winnerEvil from './winner-evil';
 
 export default function winCheck(){
   const entity = Entity.create('winCheck');
@@ -12,6 +14,7 @@ export default function winCheck(){
 
 const checkForWin = {
   timer: 200,
+  soundTimer: 200,
   init: (b, e) => { 
 
   },
@@ -22,6 +25,7 @@ const checkForWin = {
       const players = getPlayers();
       const evil = getEvilPlayer();
       let gameOver = true;
+      let evilWon = true;
       
       console.log("Checking if someone has won...");
 
@@ -29,7 +33,7 @@ const checkForWin = {
         console.log("DRAW!");
       }
       else if (evil && players.length===1) {
-        console.log("EVIL WON!");
+        winnerEvil();
         Core.music.stop();
         Core.music = new Howl({
           src: ['sounds/fail.wav'],
@@ -37,7 +41,8 @@ const checkForWin = {
         });
         Core.music.play();
       } else if (!evil){
-        console.log("GOOD WON");
+        winnerGood();
+        evilWon = false;
         Core.music.stop();
         Core.music = new Howl({
           src: ['sounds/victory.wav'],
@@ -50,8 +55,35 @@ const checkForWin = {
       }
 
       if (gameOver) {
+        displayEvil(evilWon);
         Core.remove(e);
+        setTimeout(window.location.reload.bind(window.location), 5000);
       }
     }
   }
+}
+
+function displayEvil(evilWon){
+  const {evilId} = Core;
+  const entity = Entity.create('displayEvil');
+  if (evilWon){
+    if (evilId === '0') entity.sprite = Render.getSprite('lizard1-evil');
+    if (evilId === '1') entity.sprite = Render.getSprite('lizard1-p2-evil');
+    if (evilId === '2') entity.sprite = Render.getSprite('lizard1-p3-evil');
+    if (evilId === '3') entity.sprite = Render.getSprite('lizard1-p4-evil');
+  }
+  if (!evilWon){
+    if (evilId === '0') entity.sprite = Render.getSprite('lizard1-evil-sad');
+    if (evilId === '1') entity.sprite = Render.getSprite('lizard1-p2-evil-sad');
+    if (evilId === '2') entity.sprite = Render.getSprite('lizard1-p3-evil-sad');
+    if (evilId === '3') entity.sprite = Render.getSprite('lizard1-p4-evil-sad');
+  }
+
+  entity.sprite.position.x = 20;
+  entity.sprite.position.y = 200;
+  entity.sprite.width = 16;
+  entity.sprite.height = 16;
+  entity.sprite.scale.x = 40;
+  entity.sprite.scale.y = 40;
+  Render.add(entity.sprite);
 }

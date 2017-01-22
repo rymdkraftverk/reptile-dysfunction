@@ -45,6 +45,7 @@ const spawnEvil = cid => {
   if(!evil || !evil.length) throw new Error('No evil found')
   if(evil.length != 1) throw new Error('Too much evil found')
   evil[0].alignment = 'evil'
+  Core.evilId = evil[0].id;
 }
 
 const disable = () => {

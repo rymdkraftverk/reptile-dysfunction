@@ -21,5 +21,5 @@ export default () => {
 
   Render.add(sprite)
 
-  return winnnerEvilEntity
+  return winnerEvilEntity
 }

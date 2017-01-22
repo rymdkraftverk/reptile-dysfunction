@@ -108,7 +108,7 @@ export function addPlayer(id){
 
   player.behaviours['movement'] = movementNormal(id);
   player.behaviours['sync-sprite-body'] = syncSpriteBody;
-  player.behaviours['push'] = push;
+  player.behaviours['push'] = push();
   player.behaviours['summonWave'] = summonWave(id);
 
   player.behaviours['killed'] = {

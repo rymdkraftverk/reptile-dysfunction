@@ -2,10 +2,12 @@ import { Core, Render, Entity, Key, Gamepad, Timer} from 'l1-lite';
 import { Bodies, World } from 'matter-js'
 import { Howl } from 'howler';
 
+let count = 0;
+
 export function create(creator){
   const {x, y} = creator.body.position;
 
-  const push = Entity.create('push');
+  const push = Entity.create('push' + count++);
   push.body = Bodies.circle(x, y, 100);
   push.body.entity = push;
   push.body.collisionFilter.group = -1 * (creator.id + 1);

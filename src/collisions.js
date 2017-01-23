@@ -11,17 +11,6 @@ export default function() {
           const { bodyA, bodyB } = pair;
           if (!bodyA.entity || !bodyB.entity) continue;
           checkTreasureEnter(bodyA.entity, bodyB.entity);
-          if (bodyB.entity.id === 'push' && bodyA.entity.type === 'player') {
-            console.log('ids', bodyB.entity.creatorId);
-            console.log('ids2', bodyA.entity.id);
-            if (bodyA.entity.id === bodyB.entity.creatorId) return;
-            console.log('push collide!!');
-          } else if (bodyA.entity.id === 'push' && bodyB.entity.type === 'player') {
-            console.log('ids', bodyA.entity.creatorId);
-            
-            if (bodyB.entity.id === bodyA.entity.creatorId) return;
-            console.log('push collide!!');
-          }
       }
     });
 

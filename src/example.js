@@ -1,12 +1,11 @@
   entity.behaviours['delete-move-y'] = {
-    timer: Timer.create(300, (b, e) => {
-      delete e.behaviours['move-y'];
-    }),
+    timer: Timer.create(300),
     run: (b, e) => {
       const { timer } = b;
       if (timer){
         if (timer.run(b, e)){
           delete b.timer;
+          delete e.behaviours['move-y'];
         }
       }
     }

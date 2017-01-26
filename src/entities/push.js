@@ -22,7 +22,7 @@ export function create(creator){
   sound.play();
 
   push.behaviours['delete-me'] = {
-    timer: Timer.create(5, ()=>{}),
+    timer: Timer.create(5),
     run: (b, e) => {
       if (b.timer && b.timer.run(b, e)){
         Core.remove(e);

@@ -7,12 +7,13 @@ const push = () =>({
   run: (b, e) => {
     if (b.hasPushed) {
 
-      if (b.timer && b.timer.duration() < 53){
+      if (b.timer && b.timer.counter() > 7){
         Render.remove(b.animation)
         b.animation = undefined
       }
 
       if (b.timer && b.timer.run(b, e)){
+        b.hasPushed = false;
         b.timer.reset();
         delete b.timer;
       }
@@ -41,9 +42,7 @@ const push = () =>({
       Render.add(animation)
 
       create(e);
-      b.timer = Timer.create(60, (b, e)=>{
-        b.hasPushed = false;
-      });
+      b.timer = Timer.create(60);
     }
   }
 })

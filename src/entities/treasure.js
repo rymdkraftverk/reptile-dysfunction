@@ -34,7 +34,7 @@ function getRandomDuration(){
 
 const appearRandomly = {
   new: (b) => {
-    b.timer = Timer.create(getRandomTime(), (b, e)=>{});
+    b.timer = Timer.create(getRandomTime());
   },
   create: (b, entity)=>{
     console.log("create treasure")
@@ -88,15 +88,15 @@ const appearRandomly = {
         const duration = getRandomDuration();
         b.duration = duration;
         b.sprite = e.sprite;
-        b.timer = Timer.create(duration, ()=>{});
+        b.timer = Timer.create(duration);
       },
       run: (b, e) => {
-        if (b.timer && b.timer.duration() < b.duration*0.3 && Math.round(b.timer.duration())%2===0){
+        if (b.timer && b.timer.counter() > b.duration*0.7 && Math.round(b.timer.counter())%2===0){
           Render.remove(e.sprite);
         } else {
           Render.add(b.sprite);
         }
-        if (b.timer && b.timer.duration() < b.duration-40){
+        if (b.timer && b.timer.counter() > 40){
           e.behaviours['checkPlayers'] = checkPlayers;
         }
 

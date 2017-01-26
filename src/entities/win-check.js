@@ -21,18 +21,13 @@ const checkForWin = {
   run: (b, e) => { 
     b.timer--;
     if (b.timer===0) {
-      b.timer = 200;
+      b.timer = 60;
       const players = getPlayers();
       const evil = getEvilPlayer();
       let gameOver = true;
       let evilWon = true;
-      
-      console.log("Checking if someone has won...");
 
-      if (players.length === 0){
-        console.log("DRAW!");
-      }
-      else if (evil && players.length===1) {
+      if (players.length === 0 || (evil && players.length===1)) {
         winnerEvil();
         Core.music.stop();
         Core.music = new Howl({
@@ -50,7 +45,6 @@ const checkForWin = {
         });
         Core.music.play();
       } else {
-        console.log("Players still alive...", players);
         gameOver = false;
       }
 

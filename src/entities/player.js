@@ -41,7 +41,7 @@ export function addPlayer(id){
   const player = Entity.create(id);
   player.type = 'player';
   player.controllerId = id;
-  // let body;
+  
   if (id==0){
     Entity.addAnimation(player, ['lizard1', 'lizard2'], 0.05);
     Entity.addBody(player, Bodies.circle(PLAYER1_START_POS.x, PLAYER1_START_POS.y, 8*PLAYER_SCALE));
@@ -76,8 +76,6 @@ export function addPlayer(id){
 
   body.collisionFilter.group = -1 * (id + 1);
 
-  // World.add(Core.engine.world, [player.body]);
-
   Events.on(Core.engine, 'collisionActive', (event) => {
     const { pairs } = event;
 
@@ -97,12 +95,6 @@ export function addPlayer(id){
     }
   });
 
-  /*
-  sprite.position.y = 0;
-  sprite.position.x = 0;
-  */
-
-  // body.entity = player;
   body.sprite = animation;
 
   player.behaviours['movement'] = movementNormal(id);
@@ -136,7 +128,6 @@ export function addPlayer(id){
         animation.scale.y = 3;
         animation.play()
 
-        // Render.add(animation)
         Core.add(fire)
 
         b.fireEntity = fire
@@ -158,6 +149,5 @@ export function addPlayer(id){
   }
 
   animation.play();
-  // Render.add(sprite);
   Core.add(player);
 }

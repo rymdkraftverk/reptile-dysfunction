@@ -45,7 +45,6 @@ export default () => {
         newPlayerEntity.sprite.position.x = 500 + (currentPlayers * 180)
         newPlayerEntity.sprite.position.y = 170
 
-        // Render.add(newPlayerEntity.sprite)
         currentPlayers++
         playerSprites = playerSprites.concat(newPlayerEntity.sprite)
       }
@@ -61,6 +60,5 @@ export default () => {
     Core.remove(waitingForPlayersEntity)
   }
 
-  // Render.add(sprite)
   Core.add(waitingForPlayersEntity)
 }

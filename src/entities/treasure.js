@@ -105,10 +105,7 @@ const appearRandomly = {
         }
       }
     };
-
-    // World.add(Core.engine.world, [entity.body]);
-    // Render.add(sprite);
-
+    
     const sound = new Howl({
       src: ['sounds/ruby.wav'],
       volume: 0.5

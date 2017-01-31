@@ -29,9 +29,7 @@ module.exports = (initPos, direction) => {
   Body.setInertia(entity.body, Infinity);
   const { animation, body } = entity; 
   body.restitution = 1;
-  body.entity = entity; //Whyyy?!
   body.collisionFilter.group = WAVE_COLLISION_GROUP;
-  // World.add(Core.engine.world, [entity.body]);
 
   let angle = Math.atan(direction.y/direction.x);
   if (direction.x < 0)
@@ -47,7 +45,6 @@ module.exports = (initPos, direction) => {
   animation.scale.y = 3;
   animation.play()
 
-  // Render.add(sprite);
   Core.add(entity);
   const sound = new Howl({
     src: ['sounds/waves.wav']

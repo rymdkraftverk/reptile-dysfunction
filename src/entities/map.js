@@ -39,11 +39,5 @@ export default () => {
   sprite.width = 1660;
   sprite.height = 930;
 
-  // sprite.scale.x = 4;
-  // sprite.scale.y = 4;
-  // World.add(Core.engine.world, [body]);
-  // Render.add(sprite);
-
-  // Refactor to remove this line
   Core.add(entity);
 }

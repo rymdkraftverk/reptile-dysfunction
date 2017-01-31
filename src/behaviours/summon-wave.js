@@ -1,5 +1,5 @@
-import { Core, Key, Gamepad } from 'l1-lite';
-import { Vector } from 'matter-js';
+import { Core, Key, Gamepad, Physics } from 'l1-lite';
+const { Vector } = Physics;
 import addWave from '../entities/wave.js'
 import { getPlayers, getEvilPlayer } from '../entities/player-handler';
 

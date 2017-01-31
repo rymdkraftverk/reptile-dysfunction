@@ -1,12 +1,10 @@
-import { Key } from 'l1-lite';
-import { Body, Vector } from 'matter-js';
+import { Physics } from 'l1-lite';
+const { Body, Vector } = Physics;
 
 const WAVE_SPEED = 12;
 
 module.exports = direction => ({
   run: (b, e) => {
     Body.setVelocity(e.body, Vector.mult(direction, WAVE_SPEED));
-    e.sprite.position.x = e.body.position.x;
-    e.sprite.position.y = e.body.position.y;
   }
 })

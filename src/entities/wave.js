@@ -1,5 +1,5 @@
-import { Core, Render, Entity, Key, Gamepad} from 'l1-lite';
-import { World, Bodies, Body, Vector } from 'matter-js'
+import { Core, Render, Entity, Key, Gamepad, Physics} from 'l1-lite';
+const { World, Bodies, Body, Vector } = Physics;
 import { Howl } from 'howler';
 
 import waveMovement from '../behaviours/wave-movement.js';
@@ -12,7 +12,7 @@ let wave_counter = 0;
 module.exports = (initPos, direction) => {
   const entity = Entity.create(wave_counter++);
 
-  entity.sprite = Render.getAnimation([
+  Entity.addAnimation(entity, [
     'wave-1',
     'wave-1',
     'wave-2',
@@ -21,40 +21,41 @@ module.exports = (initPos, direction) => {
     'wave-3'
     ], 0.3);
   entity.type = 'wave';
-  const { sprite } = entity;
 
-  entity.body = Bodies.rectangle(initPos.x, initPos.y, 150, 150, { 
+  Entity.addBody(entity, Bodies.rectangle(initPos.x, initPos.y, 150, 150, { 
                 chamfer: { radius: [170, 0, 150, 0] }
-  });
+  }));
   Body.rotate(entity.body, Math.PI/4+Math.PI/2);
   Body.setInertia(entity.body, Infinity);
-  entity.body.restitution = 1;
-  entity.body.entity = entity; //Whyyy?!
-  entity.body.collisionFilter.group = WAVE_COLLISION_GROUP;
-  World.add(Core.engine.world, [entity.body]);
+  const { animation, body } = entity; 
+  body.restitution = 1;
+  body.entity = entity; //Whyyy?!
+  body.collisionFilter.group = WAVE_COLLISION_GROUP;
+  // World.add(Core.engine.world, [entity.body]);
 
   let angle = Math.atan(direction.y/direction.x);
   if (direction.x < 0)
     angle += Math.PI;
-  entity.sprite.rotation += angle;
-  Body.rotate(entity.body, angle);
+  animation.rotation += angle;
+  Body.rotate(body, angle);
 
-  sprite.width = 16;
-  sprite.height = 16;
-  sprite.anchor.x = 0.5;
-  sprite.anchor.y = 0.5;
-  sprite.scale.x = 3;
-  sprite.scale.y = 3;
-  sprite.play()
+  animation.width = 16;
+  animation.height = 16;
+  animation.anchor.x = 0.5;
+  animation.anchor.y = 0.5;
+  animation.scale.x = 3;
+  animation.scale.y = 3;
+  animation.play()
 
-  Render.add(sprite);
+  // Render.add(sprite);
   Core.add(entity);
   const sound = new Howl({
     src: ['sounds/waves.wav']
   });
   sound.play();
 
-  entity.body.friction = 0;
+  body.friction = 0;
+
   entity.behaviours['sync-sprite-body'] = syncSpriteBody;
   entity.behaviours['movement'] = waveMovement(direction);
   entity.behaviours['suicide-switch'] = {

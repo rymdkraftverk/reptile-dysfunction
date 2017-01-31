@@ -1,5 +1,5 @@
-import { Key, Gamepad } from 'l1-lite';
-import Matter from 'matter-js';
+import { Key, Gamepad, Physics } from 'l1-lite';
+const { Events, Body, Vector } = Physics;
 
 import normalMovement from './movement-normal'
 
@@ -7,7 +7,7 @@ const SPEED = 3;
 module.exports = (controllerId) => ({
   time: 400,
   run: (b, e) => {
-    Matter.Body.setVelocity(e.body, Matter.Vector.create(0, 0))
+    Body.setVelocity(e.body, Vector.create(0, 0))
     var x = 0;
     var y = 0;
     if (Key.isDown('right')) {
@@ -28,9 +28,9 @@ module.exports = (controllerId) => ({
  	  } else {
  		y -= Gamepad.axisDir(controllerId, 5) * SPEED;
  	  }
-    const direction = Matter.Vector.create(x, y)
-    //Matter.Body.applyForce(e.body, e.body, direction);
-    Matter.Body.setVelocity(e.body, direction)
+    const direction = Vector.create(x, y)
+    //Body.applyForce(e.body, e.body, direction);
+    Body.setVelocity(e.body, direction)
 
     b.time--;
     if (b.time<=0){

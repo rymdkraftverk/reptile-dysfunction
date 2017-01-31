@@ -1,16 +1,18 @@
-import {Core, Entity, Render} from 'l1-lite'
-import { Bodies, World, Events } from 'matter-js'
+import {Core, Entity, Render, Physics} from 'l1-lite'
+const { Bodies, World, Events } = Physics;
 
-export default (core) => {
+export default () => {
 
-const entity = Entity.create('map');
-  entity.sprite = Render.getSprite('map');
-  entity.type = 'map';
-  entity.body = Bodies.circle(1660/2, (930/2)-15, 430, {
-    isSensor: true
+  const entity = Entity.create('map');
+  Entity.addSprite(entity, 'map', {
+    zIndex: 999
   });
+  entity.type = 'map';
+  Entity.addBody(entity, Bodies.circle(1660/2, (930/2)-15, 430, {
+    isSensor: true
+  }));
 
-  Events.on(core.engine, 'collisionEnd', (event) => {
+  Events.on(Core.engine, 'collisionEnd', (event) => {
     const { pairs } = event;
 
     let deleteMes = [];
@@ -28,20 +30,20 @@ const entity = Entity.create('map');
     }
   });
 
-  const { sprite } = entity;
-  const { body } = entity;
+  const { sprite, body } = entity;
 
-  body.entity = entity;
   body.sprite = sprite;
 
   sprite.position.y = 0;
   sprite.position.x = 0;
   sprite.width = 1660;
   sprite.height = 930;
-  //sprite.scale.x = 4;
-  //sprite.scale.y = 4;
-  World.add(core.engine.world, [body]);
-  Render.add(sprite);
-  Core.add(entity);
 
+  // sprite.scale.x = 4;
+  // sprite.scale.y = 4;
+  // World.add(Core.engine.world, [body]);
+  // Render.add(sprite);
+
+  // Refactor to remove this line
+  Core.add(entity);
 }

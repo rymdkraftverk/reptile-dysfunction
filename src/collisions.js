@@ -1,5 +1,5 @@
-import { Events } from 'matter-js'
-import { Core } from 'l1-lite'
+import { Core, Physics } from 'l1-lite'
+const { Events } = Physics;
 import { checkTreasureEnter, checkTreasureLeave } from './entities/treasure';
 
 export default function() {

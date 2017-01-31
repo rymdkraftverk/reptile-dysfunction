@@ -1,4 +1,4 @@
-import { Core, Render, Entity, Timer, Key, Debug, Gamepad} from 'l1-lite';
+import { Core, Render, Entity, Timer, Key, Debug, Gamepad } from 'l1-lite';
 
 let rowCount = 0;
 const rowRegistry = {}
@@ -15,7 +15,9 @@ let spriteCollection = []
 
 export default () => {
   const enterCodeEntity = Entity.create('enter-code')
-  enterCodeEntity.sprite = Render.getSprite('enter-secret-code')
+  Entity.addSprite(enterCodeEntity, 'enter-secret-code', {
+    zIndex: 200
+  })
   enterCodeEntity.type = 'enter-code'
   const { sprite } = enterCodeEntity
 
@@ -73,7 +75,5 @@ export default () => {
     Render.add(newsprite)
   }
 
-
-  Render.add(sprite)
   return enterCodeEntity
 }

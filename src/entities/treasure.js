@@ -1,5 +1,5 @@
-import { Core, Render, Entity, Key, Gamepad, Timer} from 'l1-lite';
-import { World, Bodies } from 'matter-js'
+import { Core, Render, Entity, Key, Gamepad, Timer, Physics} from 'l1-lite';
+const { World, Bodies } = Physics;
 import { Howl } from 'howler';
 
 import { getPlayers, getGoodPlayers, getEvilPlayer } from './player-handler';
@@ -37,8 +37,7 @@ const appearRandomly = {
     b.timer = Timer.create(getRandomTime());
   },
   create: (b, entity)=>{
-    console.log("create treasure")
-    entity.sprite = Render.getAnimation([
+    Entity.addAnimation(entity, [
       "gem1",
       "gem1",
       "gem1",
@@ -67,34 +66,33 @@ const appearRandomly = {
       "gem1"
     ], 0.5);
 
-    const { sprite } = entity;
+    const { animation } = entity;
     const { x, y } = getRandomPosition();
-    entity.body = Bodies.circle(x, y, 100, {
+    Entity.addBody(entity, Bodies.circle(x, y, 100, {
       isSensor: true
-    });
-    entity.body.entity = entity;
+    }));
 
-    sprite.width = 16;
-    sprite.height = 16;
-    sprite.anchor.x = 0.5;
-    sprite.anchor.y = 0.5;
-    sprite.scale.x = 2;
-    sprite.scale.y = 2;
-    sprite.play()
+    animation.width = 16;
+    animation.height = 16;
+    animation.anchor.x = 0.5;
+    animation.anchor.y = 0.5;
+    animation.scale.x = 2;
+    animation.scale.y = 2;
+    animation.play()
     entity.behaviours['sync-sprite-body'] = syncSpriteBody;
 
     entity.behaviours['delete-me'] = {
       init: (b, e) => {
         const duration = getRandomDuration();
         b.duration = duration;
-        b.sprite = e.sprite;
+        b.animation = e.animation;
         b.timer = Timer.create(duration);
       },
       run: (b, e) => {
         if (b.timer && b.timer.counter() > b.duration*0.7 && Math.round(b.timer.counter())%2===0){
-          Render.remove(e.sprite);
+          Render.remove(e.animation);
         } else {
-          Render.add(b.sprite);
+          Render.add(b.animation);
         }
         if (b.timer && b.timer.counter() > 40){
           e.behaviours['checkPlayers'] = checkPlayers;
@@ -108,8 +106,8 @@ const appearRandomly = {
       }
     };
 
-    World.add(Core.engine.world, [entity.body]);
-    Render.add(sprite);
+    // World.add(Core.engine.world, [entity.body]);
+    // Render.add(sprite);
 
     const sound = new Howl({
       src: ['sounds/ruby.wav'],
@@ -126,8 +124,8 @@ const appearRandomly = {
       b.create(b, entity);
       delete b.timer;
     }
-    if (entity.sprite.position) {
-      entity.sprite.position.x += 5
+    if (entity.animation) {
+      entity.animation.position.x += 5
     }
   }
 }
@@ -146,7 +144,7 @@ function treasureFail(b, e){
   b.timer.reset();
   delete e.behaviours['delete-me'];
 
-  Render.remove(e.sprite);
+  Render.remove(e.animation);
   World.remove(Core.engine.world, [e.body]);
 
   const sound = new Howl({
@@ -169,7 +167,7 @@ function treasureWin(b, e){
   delete e.behaviours['delete-me'];
   delete e.behaviours['checkPlayers'];
 
-  Render.remove(e.sprite);
+  Render.remove(e.animation);
   World.remove(Core.engine.world, [e.body]);
 
   const sound = new Howl({

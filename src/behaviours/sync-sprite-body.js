@@ -1,8 +1,17 @@
 
 const b = {
   run: (b, e)=>{
-    e.sprite.position.x = e.body.position.x;
-    e.sprite.position.y = e.body.position.y;
+    const { x, y } = e.body.position;
+
+    if (e.sprite){
+      e.sprite.position.y = y;
+      e.sprite.position.x = x;
+    }
+
+    if (e.animation){
+      e.animation.position.y = y;
+      e.animation.position.x = x;
+    }
   }
 }
 

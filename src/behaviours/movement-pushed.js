@@ -1,5 +1,5 @@
-import { Key, Gamepad } from 'l1-lite';
-import Matter from 'matter-js';
+import { Key, Gamepad, Physics } from 'l1-lite';
+const { Vector, Body } = Physics;
 
 const movementNormal = require('./movement-normal.js');
 
@@ -34,26 +34,26 @@ module.exports = (controllerId) => ({
     } else {
       y += Gamepad.axisDir(controllerId, 5) * SPEED;
     }
-    const direction = Matter.Vector.create(x, y)
-    const force = Matter.Vector.div(direction, 1000)
-    Matter.Body.applyForce(e.body, e.body.position, force);
+    const direction = Vector.create(x, y)
+    const force = Vector.div(direction, 1000)
+    Body.applyForce(e.body, e.body.position, force);
     
     if (e.body.velocity.x > MAX_SPEED ){
-      const vector = Matter.Vector.create(MAX_SPEED, e.body.velocity.y);
-      Matter.Body.setVelocity(e.body, vector);
+      const vector = Vector.create(MAX_SPEED, e.body.velocity.y);
+      Body.setVelocity(e.body, vector);
     }
     else if (e.body.velocity.x < -MAX_SPEED ){
-      const vector = Matter.Vector.create(-MAX_SPEED, e.body.velocity.y);
-      Matter.Body.setVelocity(e.body, vector);
+      const vector = Vector.create(-MAX_SPEED, e.body.velocity.y);
+      Body.setVelocity(e.body, vector);
     }
 
     if (e.body.velocity.y > MAX_SPEED ){
-      const vector = Matter.Vector.create(e.body.velocity.x, MAX_SPEED);
-      Matter.Body.setVelocity(e.body, vector);
+      const vector = Vector.create(e.body.velocity.x, MAX_SPEED);
+      Body.setVelocity(e.body, vector);
     }
     else if (e.body.velocity.y < -MAX_SPEED ){
-      const vector = Matter.Vector.create(e.body.velocity.x, -MAX_SPEED);
-      Matter.Body.setVelocity(e.body, vector);
+      const vector = Vector.create(e.body.velocity.x, -MAX_SPEED);
+      Body.setVelocity(e.body, vector);
     }
 
     if(e.body.speed <= MIN_SLIPPERY_SPEED || b.duration > MAX_TIME) {

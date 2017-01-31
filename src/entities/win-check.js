@@ -61,16 +61,16 @@ function displayEvil(evilWon){
   const {evilId} = Core;
   const entity = Entity.create('displayEvil');
   if (evilWon){
-    if (evilId === '0') entity.sprite = Render.getSprite('lizard1-evil');
-    if (evilId === '1') entity.sprite = Render.getSprite('lizard1-p2-evil');
-    if (evilId === '2') entity.sprite = Render.getSprite('lizard1-p3-evil');
-    if (evilId === '3') entity.sprite = Render.getSprite('lizard1-p4-evil');
+    if (evilId === '0') Entity.addSprite(entity, 'lizard1-evil');
+    if (evilId === '1') Entity.addSprite(entity, 'lizard1-p2-evil');
+    if (evilId === '2') Entity.addSprite(entity, 'lizard1-p3-evil');
+    if (evilId === '3') Entity.addSprite(entity, 'lizard1-p4-evil');
   }
   if (!evilWon){
-    if (evilId === '0') entity.sprite = Render.getSprite('lizard1-evil-sad');
-    if (evilId === '1') entity.sprite = Render.getSprite('lizard1-p2-evil-sad');
-    if (evilId === '2') entity.sprite = Render.getSprite('lizard1-p3-evil-sad');
-    if (evilId === '3') entity.sprite = Render.getSprite('lizard1-p4-evil-sad');
+    if (evilId === '0') Entity.addSprite(entity, 'lizard1-evil-sad');
+    if (evilId === '1') Entity.addSprite(entity, 'lizard1-p2-evil-sad');
+    if (evilId === '2') Entity.addSprite(entity, 'lizard1-p3-evil-sad');
+    if (evilId === '3') Entity.addSprite(entity, 'lizard1-p4-evil-sad');
   }
 
   entity.sprite.position.x = 20;
@@ -79,5 +79,4 @@ function displayEvil(evilWon){
   entity.sprite.height = 16;
   entity.sprite.scale.x = 40;
   entity.sprite.scale.y = 40;
-  Render.add(entity.sprite);
 }

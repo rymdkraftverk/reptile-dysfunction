@@ -1,12 +1,12 @@
-import { Key, Gamepad } from 'l1-lite';
-import Matter from 'matter-js';
+import { Key, Gamepad, Physics } from 'l1-lite';
+const { Body, Vector } = Physics;
 
 const SPEED = 3;
 const MOVEMENT_THREASHOLD = 0.2;
 
 module.exports = (controllerId) => ({
   run: (b, e) => {
-    Matter.Body.setVelocity(e.body, Matter.Vector.create(0, 0));
+    Body.setVelocity(e.body, Vector.create(0, 0));
     var x = 0;
     var y = 0;
     if (Key.isDown('right')) {
@@ -33,13 +33,13 @@ module.exports = (controllerId) => ({
  	  } else {
  		y += Gamepad.axisDir(controllerId, 5) * SPEED;
  	  }
-    const direction = Matter.Vector.create(x, y)
+    const direction = Vector.create(x, y)
 
-    const east = Matter.Vector.create(1, 0)
-    const angle = Matter.Vector.angle(east, direction);
-    Matter.Body.setAngle(e.body, angle);
+    const east = Vector.create(1, 0)
+    const angle = Vector.angle(east, direction);
+    Body.setAngle(e.body, angle);
 
-    Matter.Body.setVelocity(e.body, direction)
+    Body.setVelocity(e.body, direction)
   }
 })
 

@@ -1,5 +1,5 @@
-import { Core, Render, Entity, Key, Gamepad} from 'l1-lite';
-import { Bodies, World, Events } from 'matter-js';
+import { Core, Render, Entity, Key, Gamepad, Physics } from 'l1-lite';
+const { Bodies, World, Events } = Physics;
 import { Howl } from 'howler';
 
 import movementNormal from '../behaviours/movement-normal.js';
@@ -41,43 +41,42 @@ export function addPlayer(id){
   const player = Entity.create(id);
   player.type = 'player';
   player.controllerId = id;
-  let body;
+  // let body;
   if (id==0){
-    player.sprite = Render.getAnimation(['lizard1', 'lizard2'], 0.05);
-    body = Bodies.circle(PLAYER1_START_POS.x, PLAYER1_START_POS.y, 8*PLAYER_SCALE);
+    Entity.addAnimation(player, ['lizard1', 'lizard2'], 0.05);
+    Entity.addBody(player, Bodies.circle(PLAYER1_START_POS.x, PLAYER1_START_POS.y, 8*PLAYER_SCALE));
   }
   else if (id==1){
-    player.sprite = Render.getAnimation(['lizard1-p2', 'lizard2-p2'], 0.05);
-    body = Bodies.circle(PLAYER2_START_POS.x, PLAYER2_START_POS.y, 8*PLAYER_SCALE);
+    Entity.addAnimation(player, ['lizard1-p2', 'lizard2-p2'], 0.05);
+    Entity.addBody(player, Bodies.circle(PLAYER2_START_POS.x, PLAYER2_START_POS.y, 8*PLAYER_SCALE));
   }
 
   else if (id==2){
-    player.sprite = Render.getAnimation(['lizard1-p3', 'lizard2-p3'], 0.05);
-    body = Bodies.circle(PLAYER3_START_POS.x, PLAYER3_START_POS.y, 8*PLAYER_SCALE);
+    Entity.addAnimation(player, ['lizard1-p3', 'lizard2-p3'], 0.05);
+    Entity.addBody(player, Bodies.circle(PLAYER3_START_POS.x, PLAYER3_START_POS.y, 8*PLAYER_SCALE));
   }
 
   else if (id==3){
-    player.sprite = Render.getAnimation(['lizard1-p4', 'lizard2-p4'], 0.05);
-    body = Bodies.circle(PLAYER4_START_POS.x, PLAYER4_START_POS.y, 8*PLAYER_SCALE);
+    Entity.addAnimation(player, ['lizard1-p4', 'lizard2-p4'], 0.05);
+    Entity.addBody(player, Bodies.circle(PLAYER4_START_POS.x, PLAYER4_START_POS.y, 8*PLAYER_SCALE));
   }
 
   else if (id==4){
-    player.sprite = Render.getAnimation(['pikachu'], 0.05);
-    body = Bodies.circle(PLAYER5_START_POS.x, PLAYER5_START_POS.y, 8*PLAYER_SCALE);
+    Entity.addAnimation(player, ['pikachu'], 0.05);
+    Entity.addBody(player, Bodies.circle(PLAYER5_START_POS.x, PLAYER5_START_POS.y, 8*PLAYER_SCALE));
   }
 
-  player.body = body;
-  const { sprite } = player;
-  sprite.width = 16;
-  sprite.height = 16;
-  sprite.anchor.x = 0.5;
-  sprite.anchor.y = 0.5;
-  sprite.scale.x = PLAYER_SCALE;
-  sprite.scale.y = PLAYER_SCALE;
+  const { animation, body } = player;
+  animation.width = 16;
+  animation.height = 16;
+  animation.anchor.x = 0.5;
+  animation.anchor.y = 0.5;
+  animation.scale.x = PLAYER_SCALE;
+  animation.scale.y = PLAYER_SCALE;
 
-  player.body.collisionFilter.group = -1 * (id + 1);
+  body.collisionFilter.group = -1 * (id + 1);
 
-  World.add(Core.engine.world, [player.body]);
+  // World.add(Core.engine.world, [player.body]);
 
   Events.on(Core.engine, 'collisionActive', (event) => {
     const { pairs } = event;
@@ -103,8 +102,8 @@ export function addPlayer(id){
   sprite.position.x = 0;
   */
 
-  body.entity = player;
-  body.sprite = sprite;
+  // body.entity = player;
+  body.sprite = animation;
 
   player.behaviours['movement'] = movementNormal(id);
   player.behaviours['sync-sprite-body'] = syncSpriteBody;
@@ -124,20 +123,20 @@ export function addPlayer(id){
       if (b.deathTicks == DEATH_TICKS && b.killed) {
         player.behaviours['movement'].run = (b, e) => {}
         const fire = Entity.create('fire')
-        fire.animation = Render.getAnimation(['fire1', 'fire2', 'fire3'], 0.3);
+        Entity.addAnimation(fire, ['fire1', 'fire2', 'fire3'], 0.3);
         const sound = new Howl({
           src: ['sounds/death.wav']
         });
         sound.play();
         World.remove(Core.engine.world, [e.body]);
         const { animation } = fire
-        animation.position.x = e.sprite.position.x - 25
-        animation.position.y = e.sprite.position.y - 18
+        animation.position.x = e.animation.position.x - 25
+        animation.position.y = e.animation.position.y - 18
         animation.scale.x = 3;
         animation.scale.y = 3;
         animation.play()
 
-        Render.add(animation)
+        // Render.add(animation)
         Core.add(fire)
 
         b.fireEntity = fire
@@ -147,7 +146,7 @@ export function addPlayer(id){
         Render.remove(b.fireEntity.animation)
         Core.remove(b.fireEntity)
 
-        Render.remove(e.sprite)
+        Render.remove(e.animation)
         Core.remove(e)
         return
       }
@@ -158,7 +157,7 @@ export function addPlayer(id){
     }
   }
 
-  sprite.play();
-  Render.add(sprite);
+  animation.play();
+  // Render.add(sprite);
   Core.add(player);
 }

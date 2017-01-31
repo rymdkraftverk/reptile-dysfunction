@@ -2,7 +2,7 @@ import { Core, Render, Entity, Timer, Key, Debug, Gamepad} from 'l1-lite';
 
 export default () => {
   const waitingForPlayersEntity = Entity.create('waiting-for-players')
-  waitingForPlayersEntity.sprite = Render.getSprite('waiting-for-players')
+  Entity.addSprite(waitingForPlayersEntity, 'waiting-for-players')
   waitingForPlayersEntity.type = 'waiting-for-players'
   const { sprite } = waitingForPlayersEntity
 
@@ -34,7 +34,7 @@ export default () => {
       if (newPlayers.length > 0){
         const newPlayerEntity = Entity.create('waiting-for-player-player-' + currentPlayers)
         const sprite = sprites[newPlayers.pop()]
-        newPlayerEntity.sprite = Render.getSprite(sprite)
+        Entity.addSprite(newPlayerEntity, sprite)
         newPlayerEntity.type = 'waiting-for-player-player'
         newPlayerEntity.sprite.width = 12
         newPlayerEntity.sprite.height = 13
@@ -45,7 +45,7 @@ export default () => {
         newPlayerEntity.sprite.position.x = 500 + (currentPlayers * 180)
         newPlayerEntity.sprite.position.y = 170
 
-        Render.add(newPlayerEntity.sprite)
+        // Render.add(newPlayerEntity.sprite)
         currentPlayers++
         playerSprites = playerSprites.concat(newPlayerEntity.sprite)
       }
@@ -61,6 +61,6 @@ export default () => {
     Core.remove(waitingForPlayersEntity)
   }
 
-  Render.add(sprite)
+  // Render.add(sprite)
   Core.add(waitingForPlayersEntity)
 }

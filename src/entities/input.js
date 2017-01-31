@@ -1,4 +1,4 @@
-import { Core, Render, Entity, Key, Gamepad} from 'l1-lite';
+import { Entity, Key, Gamepad} from 'l1-lite';
 
 const buttons = {
   gamepad: [

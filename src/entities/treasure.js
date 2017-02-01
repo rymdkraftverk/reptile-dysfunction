@@ -8,9 +8,10 @@ import syncSpriteBody from '../behaviours/sync-sprite-body.js';
 import reversed from '../behaviours/movement-reversed';
 
 let playersNear = [];
+let entity;
 
 export default function treasure() {
-  const entity = Entity.create('treasure');
+  entity = Entity.create('treasure');
 
   entity.behaviours['appearRandomly'] = appearRandomly;
   appearRandomly.new(appearRandomly);
@@ -19,8 +20,8 @@ export default function treasure() {
 }
 
 function getRandomPosition(){
-  const x = Util.getRandomRange(500, 1200);
-  const y = Util.getRandomRange(100, 800);
+  const x = Util.getRandomRange(550, 1120);
+  const y = Util.getRandomRange(160, 750);
   return { x, y };
 }
 
@@ -65,6 +66,8 @@ const appearRandomly = {
       "gem2",
       "gem1"
     ], 0.5);
+    entity.active = true;
+    setCircleSprite();
 
     const { animation } = entity;
     const { x, y } = getRandomPosition();
@@ -75,7 +78,7 @@ const appearRandomly = {
     animation.width = 16;
     animation.height = 16;
     animation.anchor.x = 0.5;
-    animation.anchor.y = 0.5;
+    animation.anchor.y = 1;
     animation.scale.x = 2;
     animation.scale.y = 2;
     animation.play()
@@ -105,7 +108,7 @@ const appearRandomly = {
         }
       }
     };
-    
+
     const sound = new Howl({
       src: ['sounds/ruby.wav'],
       volume: 0.5
@@ -128,20 +131,29 @@ const appearRandomly = {
 }
 
 const checkPlayers = {
+  timer: Timer.create(30),
   run: (b, e) => {
     if (playersNear.length === getPlayers().length - 1){
-      treasureWin(b, e);
+      if (b.timer.run()){
+        treasureWin(b, e);
+        b.timer.reset();
+      };
+    }
+    else if (b.timer.counter() > 0){
+      b.timer.reset();
     }
   }
 }
 
 function treasureFail(b, e){
+  e.active = false;
   e.behaviours['appearRandomly'] = appearRandomly;
   appearRandomly.new(appearRandomly);
   b.timer.reset();
   delete e.behaviours['delete-me'];
 
   Render.remove(e.animation);
+  Render.remove(e.sprite);
   World.remove(Core.engine.world, [e.body]);
 
   const sound = new Howl({
@@ -158,6 +170,7 @@ function treasureFail(b, e){
 }
 
 function treasureWin(b, e){
+  e.active = false;
   e.behaviours['appearRandomly'] = appearRandomly;
   appearRandomly.new(appearRandomly);
   e.behaviours['delete-me'].timer.reset();
@@ -165,6 +178,7 @@ function treasureWin(b, e){
   delete e.behaviours['checkPlayers'];
 
   Render.remove(e.animation);
+  Render.remove(e.sprite);
   World.remove(Core.engine.world, [e.body]);
 
   const sound = new Howl({
@@ -184,6 +198,7 @@ export function checkTreasureEnter(entityA, entityB){
   else if (entityB.id === 'treasure' && entityA.type === 'player'){
     playersNear.push(entityA);
   }
+  setCircleSprite();
 }
 
 export function checkTreasureLeave(entityA, entityB){
@@ -193,4 +208,55 @@ export function checkTreasureLeave(entityA, entityB){
   else if (entityB.id === 'treasure' && entityA.type === 'player'){
     playersNear = playersNear.filter(p => p.id !== entityA.id);
   }
+  setCircleSprite();
+}
+
+function setCircleSprite(){
+  if (!entity.active) return;
+  if (entity.sprite) Render.remove(entity.sprite);
+
+  let powerUpSprite = 'powerup3';
+  const options = {zIndex: 10};
+
+  if (getPlayers().length === 4){
+    if (playersNear.length >= 3){
+      powerUpSprite = 'powerup3-3';
+    }
+    else if (playersNear.length === 2){
+      powerUpSprite = 'powerup3-2';
+    }
+    else if (playersNear.length === 1) {
+      powerUpSprite = 'powerup3-1';
+    }
+    else if (playersNear.length === 0) {
+      powerUpSprite = 'powerup3'
+    }
+  } else if (getPlayers().length === 3){
+    if (playersNear.length >= 2){
+      powerUpSprite = 'powerup2-2';
+    }
+    else if (playersNear.length === 1) {
+      powerUpSprite = 'powerup2-1';
+    }
+    else if (playersNear.length === 0) {
+      powerUpSprite = 'powerup2'
+    }
+  } if (getPlayers().length <= 2){
+    if (playersNear.length === 1) {
+      powerUpSprite = 'powerup1-1';
+    }
+    else if (playersNear.length === 0) {
+      powerUpSprite = 'powerup1'
+    }
+  }
+
+  Entity.addSprite(entity, powerUpSprite, options);
+
+  const { sprite } = entity;
+  sprite.height = 63;
+  sprite.height = 59;
+  sprite.anchor.x = 0.5;
+  sprite.anchor.y = 0.5;
+  sprite.scale.x = 4;
+  sprite.scale.y = 4;
 }

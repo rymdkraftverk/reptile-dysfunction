@@ -8,7 +8,7 @@ export default () => {
     zIndex: 999
   });
   entity.type = 'map';
-  Entity.addBody(entity, Bodies.circle(1660/2, (930/2)-15, 430, {
+  Entity.addBody(entity, Bodies.circle(1660/2+15, (930/2)-5, 430, {
     isSensor: true
   }));
 

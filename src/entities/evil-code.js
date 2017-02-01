@@ -22,6 +22,7 @@ export default (code) => {
       }
 
     if (newCodeSprite) {
+      newCodeSprite.zIndex = -10;
       codeList = codeList.concat(newCodeSprite)
     }
   }

@@ -1,4 +1,4 @@
-import { Core, Render, Entity, Key, Gamepad, Timer, Physics} from 'l1-lite';
+import { Core, Render, Entity, Key, Gamepad, Timer, Physics, Util } from 'l1-lite';
 const { World, Bodies } = Physics;
 import { Howl } from 'howler';
 
@@ -19,17 +19,17 @@ export default function treasure() {
 }
 
 function getRandomPosition(){
-  const x = Math.floor((Math.random() * 700) + 500);
-  const y = Math.floor((Math.random() * 700) + 100);
+  const x = Util.getRandomRange(500, 1200);
+  const y = Util.getRandomRange(100, 800);
   return { x, y };
 }
 
 function getRandomTime(){
-  return Math.floor((Math.random()*200) + 300);
+  return Util.getRandomRange(300, 500);
 }
 
 function getRandomDuration(){
-  return Math.floor((Math.random()*200) + 300);
+  return Util.getRandomRange(300, 500);
 }
 
 const appearRandomly = {

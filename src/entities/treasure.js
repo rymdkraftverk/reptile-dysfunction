@@ -9,6 +9,7 @@ import reversed from '../behaviours/movement-reversed';
 
 let playersNear = [];
 let entity;
+let evilReversedText, goodReversedText;
 
 export default function treasure() {
   entity = Entity.create('treasure');
@@ -17,6 +18,30 @@ export default function treasure() {
   appearRandomly.new(appearRandomly);
 
   Core.add(entity);
+
+  evilReversedText = getReversedText('Evil Reversed!', 'red');
+  goodReversedText = getReversedText('Good Reversed!', 'green');
+  entity.behaviours['reversedTextHandler'] = reversedTextHandler;
+
+}
+
+function getReversedText(text, color){
+  const reversedText = Render.getText(text, { 
+    fontFamily: 'Press Start 2P',
+    fontSize: 36,
+    fill: color,
+    stroke: '#4a1850',
+    strokeThickness: 5,
+    dropShadow: true,
+    dropShadowColor: '#000000',
+    dropShadowBlur: 4,
+    dropShadowAngle: Math.PI / 6,
+    dropShadowDistance: 6
+  });
+  reversedText.x = 600;
+  reversedText.y = 300;
+  reversedText.zIndex = -20;
+  return reversedText;
 }
 
 function getRandomPosition(){
@@ -26,7 +51,7 @@ function getRandomPosition(){
 }
 
 function getRandomTime(){
-  return Util.getRandomRange(300, 500);
+  return Util.getRandomRange(50, 500);
 }
 
 function getRandomDuration(){
@@ -130,6 +155,21 @@ const appearRandomly = {
   }
 }
 
+const reversedTextHandler = {
+  init: (b, e) => {
+    b.timer = Timer.create(60);
+    b.timer.active = false;
+  },
+  run: (b, e) => {
+    if (b.timer.active && b.timer.run()){
+      b.timer.active = false;
+      Render.remove(evilReversedText);
+      Render.remove(goodReversedText);
+      b.timer.reset();
+    }
+  }
+}
+
 const checkPlayers = {
   timer: Timer.create(30),
   run: (b, e) => {
@@ -147,6 +187,12 @@ const checkPlayers = {
 
 function treasureFail(b, e){
   e.active = false;
+
+  e.behaviours['reversedTextHandler'].timer.active = true;
+  Render.add(goodReversedText);
+  console.log('good reversed', goodReversedText);
+
+
   e.behaviours['appearRandomly'] = appearRandomly;
   appearRandomly.new(appearRandomly);
   b.timer.reset();
@@ -171,9 +217,14 @@ function treasureFail(b, e){
 
 function treasureWin(b, e){
   e.active = false;
+
+  e.behaviours['reversedTextHandler'].timer.active = true;
+  Render.add(evilReversedText);
+  console.log('evil reversed', evilReversedText);
+
   e.behaviours['appearRandomly'] = appearRandomly;
   appearRandomly.new(appearRandomly);
-  e.behaviours['delete-me'].timer.reset();
+  if (e.behaviours['delete-me']) e.behaviours['delete-me'].timer.reset();
   delete e.behaviours['delete-me'];
   delete e.behaviours['checkPlayers'];
 

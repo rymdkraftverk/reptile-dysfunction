@@ -11,23 +11,23 @@ import summonWave from '../behaviours/summon-wave.js'
 const DEATH_TICKS = 100
 
 const PLAYER1_START_POS = {
-  x: 500,
-  y: 400
+  x: 600,
+  y: 300
 };
 
 const PLAYER2_START_POS = {
-  x: 700,
-  y: 400
+  x: 1100,
+  y: 300
 };
 
 const PLAYER3_START_POS = {
-  x: 800,
-  y: 500
+  x: 600,
+  y: 650
 };
 
 const PLAYER4_START_POS = {
-  x: 900,
-  y: 600
+  x: 1100,
+  y: 650
 };
 
 const PLAYER5_START_POS = {

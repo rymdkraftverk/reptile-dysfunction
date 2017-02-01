@@ -32,8 +32,8 @@ const push = () =>({
         'push1'
       ], 0.8)
       const {animation} = b;
-      animation.position.y = e.sprite.position.y;
-      animation.position.x = e.sprite.position.x;
+      animation.position.y = e.animation.position.y;
+      animation.position.x = e.animation.position.x;
       animation.anchor.x = 0.5;
       animation.anchor.y = 0.5;
       animation.scale.x = 5;

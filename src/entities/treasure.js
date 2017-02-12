@@ -1,6 +1,5 @@
-import { Core, Render, Entity, Key, Gamepad, Timer, Physics, Util } from 'l1-lite';
+import { Core, Render, Entity, Key, Gamepad, Timer, Physics, Util, Sound } from 'l1-lite';
 const { World, Bodies } = Physics;
-import { Howl } from 'howler';
 
 import { getPlayers, getGoodPlayers, getEvilPlayer } from './player-handler';
 import syncSpriteBody from '../behaviours/sync-sprite-body.js';
@@ -133,11 +132,7 @@ const appearRandomly = {
         }
       }
     };
-
-    const sound = new Howl({
-      src: ['sounds/ruby.wav'],
-      volume: 0.5
-    });
+    const sound = Sound.getSound('sounds/ruby.wav', { volume: 0.5 });
     sound.play();
 
     entity.body.friction = 0;
@@ -202,8 +197,7 @@ function treasureFail(b, e){
   Render.remove(e.sprite);
   World.remove(Core.engine.world, [e.body]);
 
-  const sound = new Howl({
-    src: ['sounds/treasureFail.wav'],
+  const sound = Sound.getSound('sounds/treasureFail.wav', {
     volume: 0.2
   });
   sound.play();
@@ -232,9 +226,7 @@ function treasureWin(b, e){
   Render.remove(e.sprite);
   World.remove(Core.engine.world, [e.body]);
 
-  const sound = new Howl({
-    src: ['sounds/powerup.wav']
-  });
+  const sound = Sound.getSound('sounds/powerup.wav');
   sound.play();
 
   //Make the evil player controlls reversed

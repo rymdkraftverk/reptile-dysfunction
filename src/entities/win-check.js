@@ -1,5 +1,4 @@
-import { Core, Render, Entity, Key, Gamepad, Timer} from 'l1-lite';
-import { Howl } from 'howler';
+import { Core, Render, Entity, Key, Gamepad, Timer, Sound } from 'l1-lite';
 import { getPlayers, getEvilPlayer } from './player-handler';
 import winnerGood from './winner-good';
 import winnerEvil from './winner-evil';
@@ -30,19 +29,13 @@ const checkForWin = {
       if (players.length === 0 || (evil && players.length===1)) {
         winnerEvil();
         Core.music.stop();
-        Core.music = new Howl({
-          src: ['sounds/fail.wav'],
-          loop: false
-        });
+        Core.music = Sound.getSound('sounds/fail.wav');
         Core.music.play();
       } else if (!evil){
         winnerGood();
         evilWon = false;
         Core.music.stop();
-        Core.music = new Howl({
-          src: ['sounds/victory.wav'],
-          loop: false
-        });
+        Core.music = Sound.getSound('sounds/victory.wav');
         Core.music.play();
       } else {
         gameOver = false;

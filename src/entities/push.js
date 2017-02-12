@@ -1,6 +1,5 @@
-import { Core, Entity, Key, Gamepad, Timer, Physics} from 'l1-lite';
+import { Core, Entity, Key, Gamepad, Timer, Physics, Sound } from 'l1-lite';
 const { Bodies, World } = Physics;
-import { Howl } from 'howler';
 
 let count = 0;
 
@@ -13,11 +12,7 @@ export function create(creator){
   push.creatorId = creator.id;
   
   Core.add(push);
-
-  const sound = new Howl({
-    src: ['sounds/hit.wav'],
-    volume: 0.8
-  });
+  const sound = Sound.getSound('sounds/hit.wav', { volume: 0.8 });
   sound.play();
 
   push.behaviours['delete-me'] = {

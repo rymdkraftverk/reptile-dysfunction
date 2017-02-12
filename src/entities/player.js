@@ -1,6 +1,5 @@
-import { Core, Render, Entity, Key, Gamepad, Physics } from 'l1-lite';
+import { Core, Render, Entity, Key, Gamepad, Physics, Sound } from 'l1-lite';
 const { Bodies, World, Events } = Physics;
-import { Howl } from 'howler';
 
 import movementNormal from '../behaviours/movement-normal.js';
 import syncSpriteBody from '../behaviours/sync-sprite-body.js';
@@ -116,9 +115,7 @@ export function addPlayer(id){
         player.behaviours['movement'].run = (b, e) => {}
         const fire = Entity.create('fire')
         Entity.addAnimation(fire, ['fire1', 'fire2', 'fire3'], 0.3);
-        const sound = new Howl({
-          src: ['sounds/death.wav']
-        });
+        const sound = Sound.getSound('sounds/death.wav');
         sound.play();
         World.remove(Core.engine.world, [e.body]);
         const { animation } = fire

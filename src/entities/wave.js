@@ -1,6 +1,5 @@
-import { Core, Render, Entity, Key, Gamepad, Physics} from 'l1-lite';
+import { Core, Render, Entity, Key, Gamepad, Physics, Sound } from 'l1-lite';
 const { World, Bodies, Body, Vector } = Physics;
-import { Howl } from 'howler';
 
 import waveMovement from '../behaviours/wave-movement.js';
 import syncSpriteBody from '../behaviours/sync-sprite-body.js';
@@ -46,9 +45,7 @@ module.exports = (initPos, direction) => {
   animation.play()
 
   Core.add(entity);
-  const sound = new Howl({
-    src: ['sounds/waves.wav']
-  });
+  const sound = Sound.getSound('sounds/waves.wav');
   sound.play();
 
   body.friction = 0;

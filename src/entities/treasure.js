@@ -168,7 +168,7 @@ const reversedTextHandler = {
 const checkPlayers = {
   timer: Timer.create(30),
   run: (b, e) => {
-    if (playersNear.length === getPlayers().length - 1){
+    if (playersNear.length >= getPlayers().length - 1){
       if (b.timer.run()){
         treasureWin(b, e);
         b.timer.reset();
@@ -282,7 +282,7 @@ function setCircleSprite(){
       powerUpSprite = 'powerup2'
     }
   } if (getPlayers().length <= 2){
-    if (playersNear.length === 1) {
+    if (playersNear.length >= 1) {
       powerUpSprite = 'powerup1-1';
     }
     else if (playersNear.length === 0) {

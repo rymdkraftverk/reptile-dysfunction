@@ -50,11 +50,11 @@ function getRandomPosition(){
 }
 
 function getRandomTime(){
-  return Util.getRandomRange(50, 500);
+  return Util.getRandomRange(400, 500);
 }
 
 function getRandomDuration(){
-  return Util.getRandomRange(300, 500);
+  return Util.getRandomRange(300, 450);
 }
 
 const appearRandomly = {
@@ -185,8 +185,6 @@ function treasureFail(b, e){
 
   e.behaviours['reversedTextHandler'].timer.active = true;
   Render.add(goodReversedText);
-  console.log('good reversed', goodReversedText);
-
 
   e.behaviours['appearRandomly'] = appearRandomly;
   appearRandomly.new(appearRandomly);
@@ -214,7 +212,6 @@ function treasureWin(b, e){
 
   e.behaviours['reversedTextHandler'].timer.active = true;
   Render.add(evilReversedText);
-  console.log('evil reversed', evilReversedText);
 
   e.behaviours['appearRandomly'] = appearRandomly;
   appearRandomly.new(appearRandomly);

@@ -1,9 +1,8 @@
-import { Core, Render, Entity, Gamepad} from 'l1-lite';
-import movementNormal from '../behaviours/movement-normal.js';
-import {addPlayer} from './player';
+import { Entity, Gamepad } from 'l1';
+import addPlayer from './player';
 
 const playerHandler = Entity.create('playerHandler');
-playerHandler.behaviours['track-players'] = {
+playerHandler.behaviors['track-players'] = {
   players: {},
   run: (b, e) => {
     const controllers = Gamepad.getGamepads();
@@ -11,19 +10,17 @@ playerHandler.behaviours['track-players'] = {
     const playerIds = Object.keys(b.players);
 
     controllerIds.forEach(id => {
-      if (!playerIds.includes(id)){
+      if (!playerIds.includes(id)) {
         b.players[id] = true;
         addPlayer(id);
         console.log('adding player', id);
       }
     });
-  }
-}
-
-Core.add(playerHandler);
+  },
+};
 
 export function getPlayers() {
-  return Core.getEntities().filter(e => e.type === 'player');
+  return Entity.getAll().filter(e => e.type === 'player');
 }
 
 export function getGoodPlayers() {

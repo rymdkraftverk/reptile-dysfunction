@@ -1,15 +1,18 @@
-import { Core, Render, Entity, Key, Gamepad, Physics, Sound } from 'l1-lite';
-const { World, Bodies, Body, Vector } = Physics;
+import { Entity, Physics, Sound } from 'l1';
+import waveMovement from '../behaviors/wave-movement';
+import syncSpriteBody from '../behaviors/sync-sprite-body';
 
-import waveMovement from '../behaviours/wave-movement.js';
-import syncSpriteBody from '../behaviours/sync-sprite-body.js';
+const {
+  Bodies, Body,
+} = Physics;
+
 
 const WAVE_LIFESPAN = 10 * 60;
 const WAVE_COLLISION_GROUP = -3234;
-let wave_counter = 0;
+let waveCounter = 0;
 
 module.exports = (initPos, direction) => {
-  const entity = Entity.create(wave_counter++);
+  const entity = Entity.create(waveCounter++);
 
   Entity.addAnimation(entity, [
     'wave-1',
@@ -17,22 +20,21 @@ module.exports = (initPos, direction) => {
     'wave-2',
     'wave-2',
     'wave-3',
-    'wave-3'
-    ], 0.3);
+    'wave-3',
+  ], 0.3);
   entity.type = 'wave';
 
-  Entity.addBody(entity, Bodies.rectangle(initPos.x, initPos.y, 150, 150, { 
-                chamfer: { radius: [170, 0, 150, 0] }
+  Entity.addBody(entity, Bodies.rectangle(initPos.x, initPos.y, 150, 150, {
+    chamfer: { radius: [170, 0, 150, 0] },
   }));
-  Body.rotate(entity.body, Math.PI/4+Math.PI/2);
+  Body.rotate(entity.body, (Math.PI / 4) + (Math.PI / 2));
   Body.setInertia(entity.body, Infinity);
-  const { animation, body } = entity; 
+  const { animation, body } = entity;
   body.restitution = 1;
   body.collisionFilter.group = WAVE_COLLISION_GROUP;
 
-  let angle = Math.atan(direction.y/direction.x);
-  if (direction.x < 0)
-    angle += Math.PI;
+  let angle = Math.atan(direction.y / direction.x);
+  if (direction.x < 0) { angle += Math.PI; }
   animation.rotation += angle;
   Body.rotate(body, angle);
 
@@ -42,24 +44,22 @@ module.exports = (initPos, direction) => {
   animation.anchor.y = 0.5;
   animation.scale.x = 3;
   animation.scale.y = 3;
-  animation.play()
+  animation.play();
 
-  Core.add(entity);
   const sound = Sound.getSound('sounds/waves.wav');
   sound.play();
 
   body.friction = 0;
 
-  entity.behaviours['sync-sprite-body'] = syncSpriteBody;
-  entity.behaviours['movement'] = waveMovement(direction);
-  entity.behaviours['suicide-switch'] = {
+  entity.behaviors['sync-sprite-body'] = syncSpriteBody;
+  entity.behaviors.movement = waveMovement(direction);
+  entity.behaviors['suicide-switch'] = {
     timer: 0,
     run: (b, e) => {
       b.timer++;
-      if(b.timer > WAVE_LIFESPAN) {
-        Render.remove(e.sprite)
-        Core.remove(e)
+      if (b.timer > WAVE_LIFESPAN) {
+        Entity.destroy(e);
       }
-    }
-  }
-}
+    },
+  };
+};

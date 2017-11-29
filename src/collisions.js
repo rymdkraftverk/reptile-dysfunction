@@ -1,9 +1,9 @@
-import { Core, Physics } from 'l1-lite'
+import { Game, Physics } from 'l1'
 const { Events } = Physics;
 import { checkTreasureEnter, checkTreasureLeave } from './entities/treasure';
 
 export default function() {
-  Events.on(Core.engine, 'collisionStart', (event) => {
+  Events.on(Game.getPhysicsEngine(), 'collisionStart', (event) => {
       const { pairs } = event;
 
       for (let i = 0, j = pairs.length; i != j; ++i) {
@@ -14,7 +14,7 @@ export default function() {
       }
     });
 
-    Events.on(Core.engine, 'collisionEnd', (event) => {
+    Events.on(Game.getPhysicsEngine(), 'collisionEnd', (event) => {
       const { pairs } = event;
 
       for (let i = 0, j = pairs.length; i != j; ++i) {

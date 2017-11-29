@@ -1,40 +1,28 @@
-import { Core, Render, Entity, Timer, Key, Debug, Gamepad, Physics, Sound } from 'l1-lite';
+import 'babel-polyfill';
+import { Game, Sound } from 'l1';
 import sprites from './sprites.json';
-import map from './entities/map'
-import treasure from './entities/treasure'
+import map from './entities/map';
+import treasure from './entities/treasure';
+import './entities/init-phase';
 
-import addWave from './entities/wave.js'
-import initPhase from './entities/init-phase.js'
-import winCheck from './entities/win-check.js'
-import collisions from './collisions'
-import waitingForPlayers from './entities/waiting-for-players'
+import collisions from './collisions';
 
-import { addPlayer } from './entities/player'
-
-import playerHandler from './entities/player-handler';
 import input from './entities/input';
 
-Render.createRenderer(1660, 930, sprites).then(() => {
-  Core.createCore();
-  Core.start();
-  Core.createPhysics();
+Game.init(1660, 930, sprites, { physics: true, debug: true }).then(() => {
+  Game.start();
 
-  Debug.initDebugTools();
-
-  Core.add(input)
-  input.registerKeys()
+  input.registerKeys();
 
   const music = Sound.getSound('sounds/song.wav', {
-    loop: true
+    loop: true,
   });
 
   music.play();
-  Core.music = music
+  Game.music = music;
 
-  map(Core);
+  map();
   treasure();
-  winCheck();
   collisions();
-  addPlayer('4');
-  Core.add(initPhase)
+  // addPlayer('4');
 });

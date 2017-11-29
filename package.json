@@ -4,12 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "i": "rm -rf node_modules/l1-lite && npm install",
+    "l1": "yarn add file:../level1/client && yarn add file:../level1/server",
     "build": "browserify src/index.js -o public/bundle.js -t [ babelify ]",
     "watch": "watchify src/index.js -o public/bundle.js -t [ babelify ] --debug",
     "start": "cd public && python -m SimpleHTTPServer"
   },
   "dependencies": {
+    "babel-polyfill": "^6.26.0",
+    "l1": "file:../level1/client",
+    "l1-server": "file:../level1/server",
     "query-string": "^4.3.1"
   },
   "author": "",
@@ -19,6 +22,9 @@
     "babel-preset-latest": "^6.16.0",
     "babelify": "^7.3.0",
     "browserify": "^13.3.0",
+    "eslint": "^4.12.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.8.0",
     "watchify": "^3.8.0"
   }
 }

@@ -1,75 +1,68 @@
-import { Core, Render, Entity, Timer, Key, Debug, Gamepad} from 'l1-lite';
+import { Entity } from 'l1';
 
 export default (code) => {
-  let codeList = []
+  let codeList = [];
 
-  for (let i = 0; i < code.length; i++){
-    let newCodeSprite = undefined
-      const c = code[i]
-      switch(c) {
-        case 'y':
-          newCodeSprite = Render.getSprite('code-yellow')
-        break
-        case 'r':
-          newCodeSprite = Render.getSprite('code-red')
-        break
-        case 'b':
-          newCodeSprite = Render.getSprite('code-blue')
-        break
-        case 'g':
-          newCodeSprite = Render.getSprite('code-green')
-        break
-      }
+  for (let i = 0; i < code.length; i++) {
+    let entity;
+    const c = code[i];
+    switch (c) {
+      case 'y':
+        entity = Entity.create('code-yellow');
+        Entity.addSprite(entity, 'code-yellow', { zIndex: -10 });
+        break;
+      case 'r':
+        entity = Entity.create('code-red');
+        Entity.addSprite(entity, 'code-red', { zIndex: -10 });
+        break;
+      case 'b':
+        entity = Entity.create('code-blue');
+        Entity.addSprite(entity, 'code-blue', { zIndex: -10 });
+        break;
+      case 'g':
+        entity = Entity.create('code-green');
+        Entity.addSprite(entity, 'code-green', { zIndex: -10 });
+        break;
+      default:
+        break;
+    }
 
-    if (newCodeSprite) {
-      newCodeSprite.zIndex = -10;
-      codeList = codeList.concat(newCodeSprite)
+    if (entity) {
+      codeList = codeList.concat(entity);
     }
   }
 
 
-  const evilCodeEntity = Entity.create('evil-code')
-  evilCodeEntity.sprite = Render.getSprite('evil-code')
-  evilCodeEntity.type = 'evil-code'
-  const { sprite } = evilCodeEntity
+  const evilCodeEntity = Entity.create('evil-code');
+  const sprite = Entity.addSrpite(evilCodeEntity, 'evil-code');
+  evilCodeEntity.type = 'evil-code';
 
-  sprite.width = 515
-  sprite.height = 166
-  sprite.anchor.x = 0
-  sprite.anchor.y = 0
-  sprite.scale.x = 1.5
-  sprite.scale.y = 1.5
-  sprite.position.x = 455
-  sprite.position.y = 15
-
-  evilCodeEntity.destroy = () => {
-      Render.remove(evilCodeEntity.sprite)
-  }
+  sprite.width = 515;
+  sprite.height = 166;
+  sprite.anchor.x = 0;
+  sprite.anchor.y = 0;
+  sprite.scale.x = 1.5;
+  sprite.scale.y = 1.5;
+  sprite.position.x = 455;
+  sprite.position.y = 15;
 
   evilCodeEntity.destroy = () => {
     for (let i = 0; i < codeList.length; i++) {
-      Render.remove(codeList[i])
+      Entity.destroy(codeList[i]);
     }
+  };
 
-    Render.remove(evilCodeEntity.sprite)
-    Core.remove(evilCodeEntity)
+  for (let i = 0; i < codeList.length; i++) {
+    const codeSprite = codeList[i].sprite;
+
+    codeSprite.width = 102;
+    codeSprite.height = 100;
+    codeSprite.anchor.x = 0;
+    codeSprite.anchor.y = 0;
+    codeSprite.scale.x = 0.5;
+    codeSprite.scale.y = 0.5;
+    codeSprite.position.x = 560 + (i * 150);
+    codeSprite.position.y = 180;
   }
-
-  Render.add(sprite)
-
-  for (let i = 0; i < codeList.length; i++){
-    const sprite = codeList[i]
-
-    sprite.width = 102
-    sprite.height = 100
-    sprite.anchor.x = 0
-    sprite.anchor.y = 0
-    sprite.scale.x = 0.5
-    sprite.scale.y = 0.5
-    sprite.position.x = 560 + (i * 150)
-    sprite.position.y = 180
-
-    Render.add(sprite)
-  }
-  return evilCodeEntity
-}
+  return evilCodeEntity;
+};

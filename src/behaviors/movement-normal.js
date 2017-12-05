@@ -26,7 +26,7 @@ module.exports = (controllerId) => ({
       y += SPEED;
     } else if (Key.isDown('up')) {
       y -= SPEED;
-    } else if (Gamepad.axisDir(controllerId, 1) != 0) {
+    } else if (Gamepad.axisDir(controllerId, 1) !== 0) {
       const axisDir = Gamepad.axisDir(controllerId, 1);
       if (checkThreashold(axisDir)) {
         y += axisDir * SPEED;

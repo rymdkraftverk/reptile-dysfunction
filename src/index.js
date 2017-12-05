@@ -18,7 +18,7 @@ Game.init(1660, 930, sprites, { physics: true, debug: true }).then(() => {
     loop: true,
   });
 
-  music.play();
+  // music.play();
   Game.music = music;
 
   map();

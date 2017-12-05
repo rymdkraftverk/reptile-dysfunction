@@ -105,29 +105,30 @@ const appearRandomly = {
     animation.play();
     entity.behaviors['sync-sprite-body'] = syncSpriteBody;
 
-    entity.behaviors['delete-me'] = {
-      init: (b, e) => {
-        const duration = getRandomDuration();
-        b.duration = duration;
-        b.animation = e.animation;
-        b.timer = Timer.create(duration);
-      },
-      run: (b, e) => {
-        if (b.timer && b.timer.counter() > b.duration * 0.7 && Math.round(b.timer.counter()) % 2 === 0) {
-          Render.remove(e.animation);
-        } else {
-          Render.add(b.animation);
-        }
-        if (b.timer && b.timer.counter() > 40) {
-          e.behaviors.checkPlayers = checkPlayers;
-        }
+    // entity.behaviors['delete-me'] = {
+    //   init: (b, e) => {
+    //     const duration = getRandomDuration();
+    //     b.duration = duration;
+    //     b.animation = e.animation;
+    //     b.timer = Timer.create(duration);
+    //   },
+    //   run: (b, e) => {
+    //     if (b.timer && b.timer.counter() > b.duration * 0.7 && Math.round(b.timer.counter()) % 2 === 0) {
+    //       Render.remove(e.animation);
+    //     } else {
+    //       const entity = Entity.create('animation');
+    //       Render.add(b.animation);
+    //     }
+    //     if (b.timer && b.timer.counter() > 40) {
+    //       e.behaviors.checkPlayers = checkPlayers;
+    //     }
 
-        // Remove the treasure after a set amount of time
-        if (b.timer && b.timer.run(b, e)) {
-          treasureFail(b, e);
-        }
-      },
-    };
+    //     // Remove the treasure after a set amount of time
+    //     if (b.timer && b.timer.run(b, e)) {
+    //       treasureFail(b, e);
+    //     }
+    //   },
+    // };
     const sound = Sound.getSound('sounds/ruby.wav', { volume: 0.5 });
     sound.play();
 
@@ -147,11 +148,11 @@ const appearRandomly = {
 };
 
 const reversedTextHandler = {
-  init: (b, e) => {
+  init: (b) => {
     b.timer = Timer.create(60);
     b.timer.active = false;
   },
-  run: (b, e) => {
+  run: (b) => {
     if (b.timer.active && b.timer.run()) {
       b.timer.active = false;
       Text.remove(evilReversedText);

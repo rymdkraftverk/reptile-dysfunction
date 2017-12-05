@@ -16,24 +16,26 @@ export default () => {
 
   const newPlayers = [];
   let currentPlayers = 0;
-  let playerSprites = [];
+  let playerEntities = [];
 
-  // const sprites = {
-  //   0: 'lizard1',
-  //   1: 'lizard1-p2',
-  //   2: 'lizard1-p3',
-  //   3: 'lizard1-p4',
-  // };
+  const sprites = {
+    0: 'lizard1',
+    1: 'lizard1-p2',
+    2: 'lizard1-p3',
+    3: 'lizard1-p4',
+  };
 
   waitingForPlayersEntity.behaviors['add-player'] = {
     add: (newPlayer) => {
+      console.log('hello');
       newPlayers.push(newPlayer);
     },
-    run: (b, e) => {
+    run: () => {
       if (newPlayers.length > 0) {
         const newPlayerEntity = Entity.create(`waiting-for-player-player-${currentPlayers}`);
-        // const newPlayerSprite = sprites[newPlayers.pop()];
-        Entity.addSprite(newPlayerEntity, sprite);
+        const newPlayerSprite = sprites[newPlayers.pop()];
+        console.log('newPlayerSprite', newPlayerSprite);
+        Entity.addSprite(newPlayerEntity, newPlayerSprite);
         newPlayerEntity.type = 'waiting-for-player-player';
         newPlayerEntity.sprite.width = 12;
         newPlayerEntity.sprite.height = 13;
@@ -45,14 +47,14 @@ export default () => {
         newPlayerEntity.sprite.position.y = 170;
 
         currentPlayers++;
-        playerSprites = playerSprites.concat(newPlayerEntity.sprite);
+        playerEntities = playerEntities.concat(newPlayerEntity);
       }
     },
   };
 
   waitingForPlayersEntity.destroy = () => {
-    playerSprites.forEach(ps => {
-      Render.remove(ps);
+    playerEntities.forEach(pe => {
+      Entity.destroy(pe);
     });
 
     Entity.destroy(waitingForPlayersEntity);

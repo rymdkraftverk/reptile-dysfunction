@@ -16,7 +16,7 @@ module.exports = (controllerId) => ({
       x -= SPEED;
     } else if (Key.isDown('left')) {
       x += SPEED;
-    } else if (Gamepad.axisDir(controllerId, 0) != 0) {
+    } else if (Gamepad.axisDir(controllerId, 0) !== 0) {
       x -= (Gamepad.axisDir(controllerId, 0) * SPEED);
     } else {
       x -= Gamepad.axisDir(controllerId, 4);
@@ -25,7 +25,7 @@ module.exports = (controllerId) => ({
       y -= SPEED;
     } else if (Key.isDown('up')) {
       y += SPEED;
-    } else if (Gamepad.axisDir(controllerId, 1) != 0) {
+    } else if (Gamepad.axisDir(controllerId, 1) !== 0) {
       y -= Gamepad.axisDir(controllerId, 1) * SPEED;
     } else {
       y -= Gamepad.axisDir(controllerId, 5) * SPEED;

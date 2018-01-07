@@ -1,14 +1,12 @@
-import { Entity, Timer, Physics, Util, Sound, Text } from 'l1';
+import { Entity, Timer, Physics, Util, Sound } from 'l1';
 import { getPlayers, getGoodPlayers, getEvilPlayer } from './player-handler';
-import syncSpriteBody from '../behaviors/sync-sprite-body';
 import reversed from '../behaviors/movement-reversed';
 
 const { Bodies } = Physics;
 
 let playersNear = [];
 let entity;
-let evilReversedText;
-let goodReversedText;
+let reversedText;
 
 export default function treasure() {
   entity = Entity.create('treasure');
@@ -16,13 +14,12 @@ export default function treasure() {
   entity.behaviors.appearRandomly = appearRandomly;
   appearRandomly.new(appearRandomly);
 
-  evilReversedText = getReversedText('Evil Reversed!', 'red');
-  goodReversedText = getReversedText('Good Reversed!', 'green');
   entity.behaviors.reversedTextHandler = reversedTextHandler;
 }
 
 function getReversedText(text, color) {
-  const reversedText = Text.create(text, {
+  const reversedTextEntity = Entity.create('reversedText');
+  const reversedTextText = Entity.addText(reversedTextEntity, text, {
     fontFamily: 'Press Start 2P',
     fontSize: 36,
     fill: color,
@@ -34,10 +31,10 @@ function getReversedText(text, color) {
     dropShadowAngle: Math.PI / 6,
     dropShadowDistance: 6,
   });
-  reversedText.x = 600;
-  reversedText.y = 300;
-  reversedText.zIndex = -20;
-  return reversedText;
+  reversedTextText.x = 600;
+  reversedTextText.y = 300;
+  reversedTextText.zIndex = 20;
+  return reversedTextEntity;
 }
 
 function getRandomPosition() {
@@ -90,45 +87,44 @@ const appearRandomly = {
     entity.active = true;
     setCircleSprite();
 
-    const { animation } = entity;
+    const { sprite } = entity;
     const { x, y } = getRandomPosition();
     Entity.addBody(entity, Bodies.circle(x, y, 100, {
       isSensor: true,
     }));
 
-    animation.width = 16;
-    animation.height = 16;
-    animation.anchor.x = 0.5;
-    animation.anchor.y = 1;
-    animation.scale.x = 2;
-    animation.scale.y = 2;
-    animation.play();
-    entity.behaviors['sync-sprite-body'] = syncSpriteBody;
+    sprite.width = 16;
+    sprite.height = 16;
+    sprite.anchor.x = 0.5;
+    sprite.anchor.y = 1;
+    sprite.scale.x = 2;
+    sprite.scale.y = 2;
 
-    // entity.behaviors['delete-me'] = {
-    //   init: (b, e) => {
-    //     const duration = getRandomDuration();
-    //     b.duration = duration;
-    //     b.animation = e.animation;
-    //     b.timer = Timer.create(duration);
-    //   },
-    //   run: (b, e) => {
-    //     if (b.timer && b.timer.counter() > b.duration * 0.7 && Math.round(b.timer.counter()) % 2 === 0) {
-    //       Render.remove(e.animation);
-    //     } else {
-    //       const entity = Entity.create('animation');
-    //       Render.add(b.animation);
-    //     }
-    //     if (b.timer && b.timer.counter() > 40) {
-    //       e.behaviors.checkPlayers = checkPlayers;
-    //     }
+    entity.behaviors['delete-me'] = {
+      init: (b, e) => {
+        const duration = getRandomDuration();
+        b.duration = duration;
+        b.sprite = e.sprite;
+        b.timer = Timer.create(duration);
+      },
+      run: (b, e) => {
+        // eslint-disable-next-line max-len
+        if (b.timer && b.timer.counter() > b.duration * 0.7 && Math.round(b.timer.counter()) % 2 === 0) {
+          Entity.destroy(e);
+        } else {
+          const animationEntity = Entity.create('animation');
+          Entity.addAnimation(animationEntity, b.animation);
+        }
+        if (b.timer && b.timer.counter() > 40) {
+          e.behaviors.checkPlayers = checkPlayers;
+        }
 
-    //     // Remove the treasure after a set amount of time
-    //     if (b.timer && b.timer.run(b, e)) {
-    //       treasureFail(b, e);
-    //     }
-    //   },
-    // };
+        // Remove the treasure after a set amount of time
+        if (b.timer && b.timer.run(b, e)) {
+          treasureFail(b, e);
+        }
+      },
+    };
     const sound = Sound.getSound('sounds/ruby.wav', { volume: 0.5 });
     sound.play();
 
@@ -141,8 +137,8 @@ const appearRandomly = {
       b.create(b, entity);
       delete b.timer;
     }
-    if (entity.animation) {
-      entity.animation.position.x += 5;
+    if (entity.sprite) {
+      entity.sprite.position.x += 5;
     }
   },
 };
@@ -155,8 +151,7 @@ const reversedTextHandler = {
   run: (b) => {
     if (b.timer.active && b.timer.run()) {
       b.timer.active = false;
-      Text.remove(evilReversedText);
-      Text.remove(goodReversedText);
+      Entity.destroy(reversedText);
       b.timer.reset();
     }
   },
@@ -180,7 +175,7 @@ function treasureFail(b, e) {
   e.active = false;
 
   e.behaviors.reversedTextHandler.timer.active = true;
-  Render.add(goodReversedText);
+  reversedText = getReversedText('Good Reversed!', 'green');
 
   e.behaviors.appearRandomly = appearRandomly;
   appearRandomly.new(appearRandomly);
@@ -196,8 +191,8 @@ function treasureFail(b, e) {
 
   // Make all good players controlled reversed
   const good = getGoodPlayers();
-  good.forEach(e => {
-    e.behaviors['movement-normal'] = reversed(e.controllerId);
+  good.forEach((ent) => {
+    ent.behaviors['movement-normal'] = reversed(ent.controllerId);
   });
 }
 
@@ -205,7 +200,7 @@ function treasureWin(b, e) {
   e.active = false;
 
   e.behaviors.reversedTextHandler.timer.active = true;
-  Render.add(evilReversedText);
+  reversedText = getReversedText('Evil Reversed!', 'red');
 
   e.behaviors.appearRandomly = appearRandomly;
   appearRandomly.new(appearRandomly);

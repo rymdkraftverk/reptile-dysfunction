@@ -1,6 +1,5 @@
 import { Entity, Physics, Sound } from 'l1';
 import waveMovement from '../behaviors/wave-movement';
-import syncSpriteBody from '../behaviors/sync-sprite-body';
 
 const {
   Bodies, Body,
@@ -12,7 +11,7 @@ const WAVE_COLLISION_GROUP = -3234;
 let waveCounter = 0;
 
 module.exports = (initPos, direction) => {
-  const entity = Entity.create(waveCounter++);
+  const entity = Entity.create(`wave${waveCounter++}`);
 
   Entity.addAnimation(entity, [
     'wave-1',
@@ -29,29 +28,27 @@ module.exports = (initPos, direction) => {
   }));
   Body.rotate(entity.body, (Math.PI / 4) + (Math.PI / 2));
   Body.setInertia(entity.body, Infinity);
-  const { animation, body } = entity;
+  const { sprite, body } = entity;
   body.restitution = 1;
   body.collisionFilter.group = WAVE_COLLISION_GROUP;
 
   let angle = Math.atan(direction.y / direction.x);
   if (direction.x < 0) { angle += Math.PI; }
-  animation.rotation += angle;
+  sprite.rotation += angle;
   Body.rotate(body, angle);
 
-  animation.width = 16;
-  animation.height = 16;
-  animation.anchor.x = 0.5;
-  animation.anchor.y = 0.5;
-  animation.scale.x = 3;
-  animation.scale.y = 3;
-  animation.play();
+  sprite.width = 16;
+  sprite.height = 16;
+  sprite.anchor.x = 0.5;
+  sprite.anchor.y = 0.5;
+  sprite.scale.x = 3;
+  sprite.scale.y = 3;
 
   const sound = Sound.getSound('sounds/waves.wav');
   sound.play();
 
   body.friction = 0;
 
-  entity.behaviors['sync-sprite-body'] = syncSpriteBody;
   entity.behaviors.movement = waveMovement(direction);
   entity.behaviors['suicide-switch'] = {
     timer: 0,

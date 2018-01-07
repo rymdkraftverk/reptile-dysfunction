@@ -5,7 +5,7 @@ const playerHandler = Entity.create('playerHandler');
 playerHandler.behaviors['track-players'] = {
   players: {},
   run: (b) => {
-    const controllers = Gamepad.getGamepads();
+    const controllers = Gamepad.getL1Controllers();
     const controllerIds = Object.keys(controllers);
     const playerIds = Object.keys(b.players);
 

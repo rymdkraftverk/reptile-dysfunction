@@ -1,6 +1,5 @@
 import { Game, Entity, Physics, Sound } from 'l1';
 import movementNormal from '../behaviors/movement-normal';
-import syncSpriteBody from '../behaviors/sync-sprite-body';
 import movementPushed from '../behaviors/movement-pushed';
 import push from '../behaviors/push';
 import summonWave from '../behaviors/summon-wave';
@@ -42,18 +41,23 @@ export default function addPlayer(id) {
   player.controllerId = id;
   if (id === '0') {
     Entity.addAnimation(player, ['lizard1', 'lizard2'], 0.05);
+    // eslint-disable-next-line max-len
     Entity.addBody(player, Bodies.circle(PLAYER1_START_POS.x, PLAYER1_START_POS.y, 8 * PLAYER_SCALE));
   } else if (id === '1') {
     Entity.addAnimation(player, ['lizard1-p2', 'lizard2-p2'], 0.05);
+    // eslint-disable-next-line max-len
     Entity.addBody(player, Bodies.circle(PLAYER2_START_POS.x, PLAYER2_START_POS.y, 8 * PLAYER_SCALE));
   } else if (id === '2') {
     Entity.addAnimation(player, ['lizard1-p3', 'lizard2-p3'], 0.05);
+    // eslint-disable-next-line max-len
     Entity.addBody(player, Bodies.circle(PLAYER3_START_POS.x, PLAYER3_START_POS.y, 8 * PLAYER_SCALE));
   } else if (id === '3') {
     Entity.addAnimation(player, ['lizard1-p4', 'lizard2-p4'], 0.05);
+    // eslint-disable-next-line max-len
     Entity.addBody(player, Bodies.circle(PLAYER4_START_POS.x, PLAYER4_START_POS.y, 8 * PLAYER_SCALE));
   } else if (id === '4') {
     Entity.addAnimation(player, ['pikachu'], 0.05);
+    // eslint-disable-next-line max-len
     Entity.addBody(player, Bodies.circle(PLAYER5_START_POS.x, PLAYER5_START_POS.y, 8 * PLAYER_SCALE));
   }
 
@@ -73,7 +77,7 @@ export default function addPlayer(id) {
     for (let i = 0; i !== pairs.length; ++i) {
       const pair = pairs[i];
       const { bodyA, bodyB } = pair;
-	  if (bodyA.entity && bodyB.entity) {
+      if (bodyA.entity && bodyB.entity) {
         if (bodyA.entity.type === 'player' && (bodyB.entity.type === 'player' || bodyB.entity.type === 'wave' || bodyB.entity.type === 'push')) {
           const idA = bodyA.entity.id;
           bodyA.entity.behaviors.movement = movementPushed(idA);
@@ -82,14 +86,13 @@ export default function addPlayer(id) {
           const idB = bodyB.entity.id;
           bodyB.entity.behaviors.movement = movementPushed(idB);
         }
-	  }
+      }
     }
   });
 
   body.sprite = sprite;
 
   player.behaviors.movement = movementNormal(id);
-  player.behaviors['sync-sprite-body'] = syncSpriteBody;
   player.behaviors.push = push();
   player.behaviors.summonWave = summonWave(id);
 
@@ -110,8 +113,8 @@ export default function addPlayer(id) {
         const sound = Sound.getSound('sounds/death.wav');
         sound.play();
         World.remove(Game.getPhysicsEngine().world, [e.body]);
-        fireSprite.position.x = e.animation.position.x - 25;
-        fireSprite.position.y = e.animation.position.y - 18;
+        fireSprite.position.x = e.sprite.position.x - 25;
+        fireSprite.position.y = e.sprite.position.y - 18;
         fireSprite.scale.x = 3;
         fireSprite.scale.y = 3;
 

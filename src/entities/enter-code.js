@@ -16,7 +16,7 @@ let entityCollection = [];
 export default () => {
   const enterCodeEntity = Entity.create('enter-code');
   const sprite = Entity.addSprite(enterCodeEntity, 'enter-secret-code', {
-    zIndex: 200,
+    zIndex: -200,
   });
   enterCodeEntity.type = 'enter-code';
 
@@ -41,15 +41,15 @@ export default () => {
       rowRegistry[pid] = rowCount;
 
       const playerControllerEntity = Entity.create(`playerControllerEntity${pid}`);
-      const animation = Entity.addAnimation(playerControllerEntity, spriteMap[pid], 0.05);
-      animation.width = 16;
-      animation.height = 16;
-      animation.anchor.x = 0.5;
-      animation.anchor.y = 0.5;
-      animation.scale.x = 4;
-      animation.scale.y = 4;
-      animation.position.x = 520;
-      animation.position.y = 190 + (rowCount * 100);
+      const playerControllerSprite = Entity.addAnimation(playerControllerEntity, spriteMap[pid], 0.05);
+      playerControllerSprite.width = 16;
+      playerControllerSprite.height = 16;
+      playerControllerSprite.anchor.x = 0.5;
+      playerControllerSprite.anchor.y = 0.5;
+      playerControllerSprite.scale.x = 4;
+      playerControllerSprite.scale.y = 4;
+      playerControllerSprite.position.x = 520;
+      playerControllerSprite.position.y = 190 + (rowCount * 100);
 
       entityCollection = entityCollection.concat(playerControllerEntity);
       rowCount++;
@@ -58,7 +58,7 @@ export default () => {
     const pRow = rowRegistry[pid];
     const pColumn = columnRegistry[pRow];
 
-    const entity = Entity.create('code-gray');
+    const entity = Entity.create(`code-gray${Math.random()}`);
     const newsprite = Entity.addSprite(entity, 'code-gray');
     newsprite.width = 102;
     newsprite.height = 100;

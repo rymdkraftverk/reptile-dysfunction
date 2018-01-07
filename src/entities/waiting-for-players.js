@@ -27,15 +27,14 @@ export default () => {
 
   waitingForPlayersEntity.behaviors['add-player'] = {
     add: (newPlayer) => {
-      console.log('hello');
+      console.log('hello player:', newPlayer);
       newPlayers.push(newPlayer);
     },
     run: () => {
       if (newPlayers.length > 0) {
         const newPlayerEntity = Entity.create(`waiting-for-player-player-${currentPlayers}`);
         const newPlayerSprite = sprites[newPlayers.pop()];
-        console.log('newPlayerSprite', newPlayerSprite);
-        Entity.addSprite(newPlayerEntity, newPlayerSprite);
+        Entity.addSprite(newPlayerEntity, newPlayerSprite, { zIndex: 200 });
         newPlayerEntity.type = 'waiting-for-player-player';
         newPlayerEntity.sprite.width = 12;
         newPlayerEntity.sprite.height = 13;

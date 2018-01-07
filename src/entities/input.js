@@ -19,12 +19,12 @@ const buttons = {
       btn: 'yellow',
     },
   ],
-  keys: ['up', 'down', 'left', 'right', 'space', 'g', 'h', 'j', 'k', 'l'],
+  // keys: ['up', 'down', 'left', 'right', 'space', 'g', 'h', 'j', 'k', 'l'],
 };
 
 const entity = Entity.create('input');
 
-entity.registerKeys = () => buttons.keys.forEach(Key.add);
+// entity.registerKeys = () => buttons.keys.forEach(Key.add);
 entity.addClickListener = (id, l) => {
   entity
     .behaviors.click
@@ -40,7 +40,7 @@ entity.removeClickListener = (id) => {
 };
 
 entity.behaviors['scan-for-gamepads'] = {
-  run: (b, e) => {
+  run: () => {
     Gamepad.run();
   },
 };
@@ -49,7 +49,7 @@ entity.behaviors.click = {
   listerners: new Map(),
   tracker: {},
   init: (b, e) => {
-    e.eachBtn((cid, btn) => {
+    e.eachBtn((cid) => {
       b.tracker[cid] = {};
     });
   },
@@ -58,7 +58,8 @@ entity.behaviors.click = {
       const pad = cid !== 'keyboard';
       if (pad) btn = btn.i;
       const pressedLast = b.tracker[cid][btn];
-      const pressedNow = pad ? Gamepad.isPressed(cid, btn) : Key.isDown(btn);
+
+      const pressedNow = pad ? Gamepad.isPressed(cid, Number(btn)) : Key.isDown(btn);
 
       // click has occured
       if (pressedLast && !pressedNow) {
@@ -74,7 +75,7 @@ entity.behaviors.click = {
 };
 
 entity.controllerIds = () => {
-  const pads = Gamepad.getGamepads();
+  const pads = Gamepad.getL1Controllers();
   return pads ? Object.keys(pads) : [];
 };
 
@@ -86,9 +87,9 @@ entity.eachBtn = (action) => {
     });
   });
 
-  buttons.keys.forEach(btn => {
-    action('keyboard', btn);
-  });
+  // buttons.keys.forEach(btn => {
+  //   action('keyboard', btn);
+  // });
 };
 
 export default entity;

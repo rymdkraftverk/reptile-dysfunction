@@ -21,7 +21,7 @@ const push = () => ({
 
     if (Gamepad.isPressed(e.controllerId, 0)) {
       b.hasPushed = true;
-      const entity = Entity.create('push');
+      const entity = Entity.create(`push${Math.random()}`);
       b.animation = Entity.addAnimation(entity, [
         'push7',
         'push6',
@@ -32,13 +32,12 @@ const push = () => ({
         'push1',
       ], 0.8);
       const { animation } = b;
-      animation.position.y = e.animation.position.y;
-      animation.position.x = e.animation.position.x;
+      animation.position.y = e.sprite.position.y;
+      animation.position.x = e.sprite.position.x;
       animation.anchor.x = 0.5;
       animation.anchor.y = 0.5;
       animation.scale.x = 5;
       animation.scale.y = 5;
-      animation.play();
 
       create(e);
       b.timer = Timer.create(60);

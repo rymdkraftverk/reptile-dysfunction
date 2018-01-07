@@ -63,19 +63,23 @@ const enable = () => {
 const getArbitraryNumberInsteadOfSensibleControllerIdForKeyboard = id => (id === 'keyboard' ? '4' : id);
 
 // states
+// eslint-disable-next-line no-unused-vars
 const waiting = {
   delay: 30,
   complete: () => {
+    // console.log('readyPlayers.length', readyPlayers.length);
     const count = controllerIds().length;
     return readyPlayers.length === count;
   },
-  init: (b, e) => {
+  init: () => {
     console.log('waiting...');
+    // eslint-disable-next-line no-debugger
     waitingForPlayers();
     disable();
 
     Entity.get('input')
       .addClickListener('ready', (cid) => {
+        console.log('ready player: cid', cid);
         if (!readyPlayers.includes(cid)) {
           readyPlayers.push(cid);
 
@@ -96,6 +100,7 @@ const waiting = {
   },
 };
 
+// eslint-disable-next-line no-unused-vars
 const registration = {
   codeLength: 4,
   complete: (b, e) => Object.keys(e.codes)
@@ -136,6 +141,7 @@ const registration = {
   run: () => {},
 };
 
+// eslint-disable-next-line no-unused-vars
 const reveal = {
   delay: 120,
   pick: (codes) => {
@@ -152,7 +158,7 @@ const reveal = {
     console.log('revealing');
     const p = b.pick(e.codes);
 
-    const map = p.cid == 'keyboard' ? kbcode : padcode;
+    const map = p.cid === 'keyboard' ? kbcode : padcode;
     const rgbyCode = p.code.map(k => map[k]);
     console.log(`[REVEAL] Player with code [${rgbyCode}] is EVIL`);
     b.evilSign = evilCode(rgbyCode);
@@ -168,11 +174,12 @@ const reveal = {
   },
 };
 
+// eslint-disable-next-line no-unused-vars
 const finished = {
-  init: (b, e) => {
+  init: () => {
     console.log('finished!');
   },
-  run: (b, e) => {
+  run: () => {
     enable();
   },
 };

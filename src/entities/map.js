@@ -5,7 +5,7 @@ const { Bodies, Events } = Physics;
 export default () => {
   const entity = Entity.create('map');
   Entity.addSprite(entity, 'map', {
-    zIndex: 999,
+    zIndex: -999,
   });
   entity.type = 'map';
   Entity.addBody(entity, Bodies.circle((1660 / 2) + 15, (930 / 2) - 5, 430, {

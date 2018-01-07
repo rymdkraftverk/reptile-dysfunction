@@ -5,15 +5,12 @@ import winnerEvil from './winner-evil';
 
 export default function winCheck() {
   const entity = Entity.create('winCheck');
-  entity.behaviors.checkForWin = checkForWin;
+  entity.behaviors.checkForWin = checkForWin();
 }
 
-const checkForWin = {
+const checkForWin = () => ({
   timer: 200,
   soundTimer: 200,
-  init: (b, e) => {
-
-  },
   run: (b, e) => {
     b.timer--;
     if (b.timer === 0) {
@@ -41,11 +38,12 @@ const checkForWin = {
       if (gameOver) {
         displayEvil(evilWon);
         Entity.destroy(e);
+        // eslint-disable-next-line no-undef
         setTimeout(window.location.reload.bind(window.location), 5000);
       }
     }
   },
-};
+});
 
 function displayEvil(evilWon) {
   const { evilId } = Game;

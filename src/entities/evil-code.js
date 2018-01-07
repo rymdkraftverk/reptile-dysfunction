@@ -8,20 +8,20 @@ export default (code) => {
     const c = code[i];
     switch (c) {
       case 'y':
-        entity = Entity.create('code-yellow');
-        Entity.addSprite(entity, 'code-yellow', { zIndex: -10 });
+        entity = Entity.create(`code-yellow${Math.random()}`);
+        Entity.addSprite(entity, 'code-yellow', { zIndex: 210 });
         break;
       case 'r':
-        entity = Entity.create('code-red');
-        Entity.addSprite(entity, 'code-red', { zIndex: -10 });
+        entity = Entity.create(`code-red${Math.random()}`);
+        Entity.addSprite(entity, 'code-red', { zIndex: 210 });
         break;
       case 'b':
-        entity = Entity.create('code-blue');
-        Entity.addSprite(entity, 'code-blue', { zIndex: -10 });
+        entity = Entity.create(`code-blue${Math.random()}`);
+        Entity.addSprite(entity, 'code-blue', { zIndex: 210 });
         break;
       case 'g':
-        entity = Entity.create('code-green');
-        Entity.addSprite(entity, 'code-green', { zIndex: -10 });
+        entity = Entity.create(`code-green${Math.random()}`);
+        Entity.addSprite(entity, 'code-green', { zIndex: 210 });
         break;
       default:
         break;
@@ -34,7 +34,7 @@ export default (code) => {
 
 
   const evilCodeEntity = Entity.create('evil-code');
-  const sprite = Entity.addSrpite(evilCodeEntity, 'evil-code');
+  const sprite = Entity.addSprite(evilCodeEntity, 'evil-code');
   evilCodeEntity.type = 'evil-code';
 
   sprite.width = 515;

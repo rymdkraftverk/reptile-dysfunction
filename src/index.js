@@ -12,7 +12,7 @@ import input from './entities/input';
 Game.init(1660, 930, sprites, { physics: true, debug: true }).then(() => {
   Game.start();
 
-  input.registerKeys();
+  // input.registerKeys();
 
   const music = Sound.getSound('sounds/song.wav', {
     loop: true,

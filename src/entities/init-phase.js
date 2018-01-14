@@ -176,11 +176,12 @@ const reveal = {
 
 // eslint-disable-next-line no-unused-vars
 const finished = {
-  init: () => {
+  init: (b, e) => {
     console.log('finished!');
+    enable();
+    Entity.destroy(e);
   },
   run: () => {
-    enable();
   },
 };
 

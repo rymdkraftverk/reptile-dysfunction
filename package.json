@@ -11,8 +11,8 @@
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0",
-    "l1": "file:../level1/client",
-    "l1-server": "file:../level1/server",
+    "l1": "0.2.0",
+    "l1-server": "0.0.1",
     "query-string": "^4.3.1"
   },
   "author": "",
